@@ -13,7 +13,19 @@ CAN is an addressed based communication protocol.
 An address can correspond to a specific node or to a specific message.
 Since CAN only utilizes a signle differential signal, it must negotiate to determine which node is transmitting and which nodes are receiving.
 The lowest address trying to be transmitted wins the negotiation, meaning that priority can be assigned to messages by assigning a lower value for an address to the message.
+This addressing and need to negotiate also adds overhead to the transmission, reducing overall data throughput.
 
 \subsection{CAN 2.0}
+
+\paragraph{}
+CAN 2.0 is the most commonly used CAN protocol in the automotive.
+This version of CAN uses an 11 bit identification or address section with maximum of 8 bytes of data transmitted.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{CAN_20_Frame.png}
+	\caption{Example CAN 2.0 Frame}
+	\label{fig:CompressionPipeline}
+\end{figure}
 
 \subsection{CAN FD}
