@@ -1,0 +1,6 @@
+[submodule "STM32SD_H750"]
+	path = STM32SD_H750
+	url = https://github.com/CPBaja/STM32SD_H750.git
+[submodule "FatFs"]
+	path = FatFs
+	url = https://github.com/stm32duino/FatFs.git
