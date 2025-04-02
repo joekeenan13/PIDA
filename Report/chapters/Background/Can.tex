@@ -1,7 +1,7 @@
 \section{CAN}
 
 \paragraph{}
-Controller Area Network (CAN) busses are commonly used in automotive applications to connect different control or instrumentation nodes together.
+Controller Area Network (CAN) busses are commonly used in automotive applications to connect different control or instrumentation nodes together developed by Bosch in the 1990s.
 This allows for any node to communicate with any other node on the bus.
 CAN utilizes a two wire asynchronous differential twisted pair signal to transmit across the bus.
 The asynchronous nature of this protocol reduces the number of wires required to transmit data.
@@ -14,17 +14,21 @@ An address can correspond to a specific node or to a specific message.
 Since CAN only utilizes a signle differential signal, it must negotiate to determine which node is transmitting and which nodes are receiving.
 The lowest address trying to be transmitted wins the negotiation, meaning that priority can be assigned to messages by assigning a lower value for an address to the message.
 This addressing and need to negotiate also adds overhead to the transmission, reducing overall data throughput.
+Additionally, there are control bits, cyclical redundancy (CRC) bits, and end of frame (EoF) bits that all also contribute to overhead.
 
 \subsection{CAN 2.0}
 
 \paragraph{}
 CAN 2.0 is the most commonly used CAN protocol in the automotive.
 This version of CAN uses an 11 bit identification or address section with maximum of 8 bytes of data transmitted.
+The bitrate for this version of CAN can be up to 1 Mega bit per second (Mbps).
+With an assumption of 1 byte of data transmission, the overhead can be computed as $\frac{48 \text{bits}}{56 \text{bits}}$.  With the assumption of 8 bytes of data transmission, the overhead can be computed as $\frac{48 \text{bits}}{112 \text{bits}}$.
+The more data that is transmitted per frame, the less overhead impacts the total data throughput.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\linewidth]{CAN_20_Frame.png}
-	\caption{Example CAN 2.0 Frame}
+	\caption{Example CAN 2.0 Frame \cite{wikipediaCAN}}
 	\label{fig:CompressionPipeline}
 \end{figure}
 
