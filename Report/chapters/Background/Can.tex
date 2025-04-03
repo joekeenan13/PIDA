@@ -21,15 +21,32 @@ Additionally, there are control bits, cyclical redundancy (CRC) bits, and end of
 \paragraph{}
 CAN 2.0 is the most commonly used CAN protocol in the automotive.
 This version of CAN uses an 11 bit identification or address section with maximum of 8 bytes of data transmitted.
-The bitrate for this version of CAN can be up to 1 Mega bit per second (Mbps).
+The bitrate for this version of CAN can be up to 1 Mega bit per second (Mbps) \cite{BOSCH_CAN20}.
 With an assumption of 1 byte of data transmission, the overhead can be computed as $\frac{48 \text{bits}}{56 \text{bits}}$.  With the assumption of 8 bytes of data transmission, the overhead can be computed as $\frac{48 \text{bits}}{112 \text{bits}}$.
 The more data that is transmitted per frame, the less overhead impacts the total data throughput.
+An example data frame of CAN 2.0 can be seen in \cref{fig:CANDataFrame}.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\linewidth]{CAN_20_Frame.png}
 	\caption{Example CAN 2.0 Frame \cite{wikipediaCAN}}
-	\label{fig:CompressionPipeline}
+	\label{fig:CANDataFrame}
 \end{figure}
 
 \subsection{CAN FD}
+
+\paragraph{}
+In 2012, Bosch released a new version of CAN with a flexible data rate called CAN FD.
+This new version of CAN has several improvements including faster data rates and allowing for more data to be transmitted in each frame.
+The flexible data rate comes from CAN FD's ability to increase the data rate during the data section of the transmission.
+The protocol supports up to 8 Mbps of throughput during the data section of transmission and up to 1 Mbps of throughput during the beginning and ending parts of the frame \cite{BOSCH_CANFD}.
+This allows for significantly more data throughput overall.
+In addition to the flexible data rate used by CAN FD, the maximum size of the data section was increased from 8 bytes to 64 bytes \cite{BOSCH_CANFD}.
+This decreases total overhead significantly making the transmission more efficient.
+These two new characteristics combined provide for a much more efficient transfer of data, particularly when transmitting high amounts of data very frequently.
+
+\paragraph{}
+In order to use CAN FD, it must be supported by the hardware, including both the CAN controller and the CAN transceiver.
+Additionally, to rely solely on CAN FD, each node on the bus must be using CAN FD.
+Otherwise, conflicts may occur impacting frames being sent or received.
+The system would theoretically operate without too many issue, but the control section of the frame would be different sizes to accomondate the additional control bits needed for the CAN FD frame.
