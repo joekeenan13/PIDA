@@ -1,1 +1,8 @@
 \chapter{System Design and Implementation}
+
+\begin{bytefield}[bitwidth=1.2em]{32}
+  \bitheader{0-31} \\
+  \bitbox{8}{Byte Shift} & \bitbox{8}{Number of senders} & \bitbox{16}{Number of messages} \\
+\bitheader{0-31} \\
+  \bitbox{8}{Field2} & \bitbox{8}{Field3} & \bitbox{8}{Field4}
+\end{bytefield}

@@ -4,3 +4,6 @@
 [submodule "FatFs"]
 	path = FatFs
 	url = https://github.com/stm32duino/FatFs.git
+[submodule "CommParams"]
+	path = CommParams
+	url = https://github.com/CPBaja/CommParams.git
