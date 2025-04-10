@@ -1,1 +1,47 @@
 \chapter{Formal Project Definition}
+
+\paragraph{}
+The aim of this project is to make a fully functional and simple to use data acquisition system for the Cal Poly Racing Baja SAE team for the CPx25 vehcile and for use in future senior projects.
+This will include the hardware unit, the software and firmware required to run the system, and tools for interfacing with the system.
+
+\section{Customer Requirements}
+
+\paragraph{}
+The customer for this project is the Cal Poly Racing Baja Team.
+As the Electrical Technical Director of this team for this year, I can also be considered the customer for this product and as such am reesponsible for defining the customer requirements for this project.
+These requirements come from a combination of the existing systems on the car, desired data that is wanted to be collected, the ability to expand the desired sensors, the programming and data collection experience of the team, and reusability.
+
+\paragraph{}
+The customer requirements are as follows:
+\begin{itemize}
+	\item A data storage rate of at least 400 Hz
+	\item Enough storage to be able to store at least 5 hours worth of data
+	\item The ability to download files
+	\item A long range wireless radio to monitor data periodically
+	\item The ability to add or remove different sensor or data modules
+	\item An IMU and GPS to monitor vehicle dynamics
+	\item The ability to directly wire some sensors to the DAQ unit
+	\item The data must be in a format that can be easily viewed
+\end{itemize}
+
+\paragraph{}
+The storage rate comes from the controls loop rate of the fasted controller on the vechicle.
+Since there are no current plans to increase the controller frequencies or add any sensors that require a faster sampling rate, this can be the minimum achievable collection rate for a while.
+The endurance event at a baja event lasts for four hours.
+Accomondating for time spent waiting for race to start and any final checks just before the event, five hours should accomondate a full endurance days worth of data.
+In order to quickly diagnose issues on the vehicle, knowing what is happening before the car arrives back in the pits is useful.
+Downloading files directly off the DAQ has been an issue for several years and significantly delays the processing of data.
+Additionally, it often was the case that the user would forget to add the storage device back onto the system, and no data would be collected until the system was reopened to analyze data again.
+The ability for the system to be modular and add other sensors is also important.
+It is often the case that there is a sensor that is wanted for a single test but would not want to be left on the vehicle permanantly.
+For a similar reason, being able to directly wire a sensor to the DAQ is useful.
+Having an onboard GPS and IMU are critical sensors for monitoring vehicle dynamics and they are always wanted.
+Finally, since the majority of the team are mechanical engineers, it is important that all data is easily accessible and that everyone is able to view the data.
+
+\section{Engineering Requirements}
+
+\paragraph{}
+From the customer requirements, engineering requirements can be derived.
+These requirements 
+
+\section{Use Cases}
