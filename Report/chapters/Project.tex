@@ -22,6 +22,7 @@ The customer requirements are as follows:
 	\item An IMU and GPS to monitor vehicle dynamics
 	\item The ability to directly wire some sensors to the DAQ unit
 	\item The data must be in a format that can be easily viewed
+	\item Low enough powere draw to not impact the battery life of the vehcile
 \end{itemize}
 
 \paragraph{}
@@ -42,6 +43,57 @@ Finally, since the majority of the team are mechanical engineers, it is importan
 
 \paragraph{}
 From the customer requirements, engineering requirements can be derived.
-These requirements 
+These requirements reflect the technical specifications that the rest of the system will be designed to.
+
+\begin{table}[H] \label{tab:EngineeringRequirements}
+\centering
+\caption{\textit{Engineering Requirements Table}}
+\begin{tabular}{|>{\raggedright\arraybackslash}p{2cm}|>{\raggedright\arraybackslash}p{3.2cm}|>{\raggedright\arraybackslash}p{3cm}|c|c|c|}
+\hline
+\textbf{Spec. Number} & \textbf{Metric} & \textbf{Requirement} & \textbf{Tolerance} & \textbf{Risk} & \textbf{Compliance} \\
+\hline
+1 & Data Storage Rate     	& 400 Hz	& Min 	& M & A, T \\
+2 & Storage Capacity		& 4 GB    	& Min 	& H & I \\
+3 & IMU Sampling Rate		& 200 Hz  	& Min 	& M & T, S \\
+4 & GPS Sampling Rate  		& 10 Hz      	& Min 	& M & T, S \\
+5 & Radio Distance 		& 2 miles	& Min 	& L & T \\
+6 & Power Draw			& 5 W		& Max	& H & A, T \\
+7 & CAN Busses			& 2		& Min	& L & I \\
+8 & ADC Resolution		& 10 bits	& Min	& L & I \\
+
+\hline
+\end{tabular}
+\end{table}
+
+\paragraph{}
+These engineering requirements are mostly tied to the customer requirements regarding the data storage rate and the desire to understand the behaviour of the car's dynamics.
+Additionally, the length of an endurance event was used to derive several engineering requirements as well.
+The rest of the customer requirements come down to design choices and less down to numbers.
 
 \section{Use Cases}
+
+\paragraph{}
+There are three main use cases for this system:
+\begin{itemize}
+	\item[(1)] To collect vehcile and subsystem data to validate design models
+	\item[(2)] To monitor vehicle health during drives at testing and competition
+	\item[(3)] To diagnose unexpected failures of a system
+\end{itemize}
+
+\paragraph{}
+In the first case, an engineer is attempting to validate a braking model for the car.
+The model is a 9 degree of freedom model and uses brake pressure, shock heights, vehcile acceleration, and other paramaters to determine when the wheels will "lock", or break traction.
+In order to validate the model for our design for information for the next design cycle as well as the design event part of competition, these sensor's data is needed.
+This is the case for several different vehicle dynamics models used to design the baja car.
+
+\paragraph{}
+In the second case, the car is driving in the endurance event of a competition.
+During an endurance event, the car will be driving continuously for several hours without the ability to regularly inspect parts or systems for failure.
+To maintain an understanding of the vehicles health and criticial systems during this event, we can view wirelessly transmitted data.
+This helps the pit crew know if or when to expect the vehcile coming back to the pits for a repair.
+
+\paragraph{}
+In the third case, we are at testing or at competition, and something breaks or starts performing worse unexpectedly.
+To properly diagnose the root cause of an issue, knowing what was happening immediately preceding a failure can be useful or even critical.
+In many instances, the car or the component may not have been visible to the tester and the driver may not be able to diagnose the issue on their own.
+In this case, having access to sensor data that can be used to extrapolate what the vehicle was doing prior to a failure can help an engineer fix or improve upon their design to reduce risk of failure in the future.
