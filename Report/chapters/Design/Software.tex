@@ -32,7 +32,7 @@ As can be seen in \cref{fig:SoftwareTasks}, these tasks all run sequentially bef
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\linewidth]{SoftwareTasks.png}
+	\includegraphics[width=0.75\linewidth]{SoftwareTasks.png}
 	\caption{Software tasks loop diagram}
 	\label{fig:SoftwareTasks}
 \end{figure}
@@ -68,3 +68,66 @@ Without access to a deebugger, many of these issues would not have been solved o
 The first and foremost task that the DAQ runs is the storage task.
 This task is responsible for managing the SD interface as well as managing the filesystem.
 This includes things like initializing the communication interface with the SD card, setting up the filesystem, and writing data to the SD card.
+
+\paragraph{}
+As with all tasks, this was implemented via a state machine.
+A diagram for this state machine can be seen in \cref{fig:StorageDiagram}.
+This machine consists of seven states, with each state handling a single part of the task.
+These state are:
+\begin{itemize}
+	\item Initialize
+	\item Wait to Open
+	\item Open
+	\item Wait to Write
+	\item Write
+	\item Close
+	\item Error
+\end{itemize}
+In this state machine, there are two types of states.
+These are action states and waiting states.
+The action states are all capable of entering the error state if their action fails unexpectandtly.
+The waiting states are incapable of entering the error state, since their sole purpose is to wait for certain conditions needed for their corresponding action state.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\linewidth]{SDStateMachine.png}
+	\caption{Storage State Diagram}
+	\label{fig:StorageDiagram}
+\end{figure}
+
+\paragraph{}
+The Initialize state is responsible for creating the SD instance.
+This includes configuring the SDIO communication interface that physically connects the SD card to the microcontroller as well as mounting the FatFS filesystem that is used by the SD card.
+The creation of the SD and File objects relies on STM32SD library.
+This library provides the functions for initializing the SD interface and for mounting the filesystem.
+One major issue is present in this library that needed to be fixed.
+The library expects the FatFS implementation to have a function f\_unmount, which can be used to unmount the filesystem.
+This function is not present in the FatFS implementation provided by STM32duino.
+To resolve this issue, the function call can be replaced with a f\_mount function call with the approriate arguments, or a wrapper function f\_unmount can be created that calls f\_mount with the approriate arguments.
+The former was used in this project.
+If the returns of both the SD initialization and the FatFS initialization are success codes, the next state is Wait to Open.
+If any other codes are returned, the next state is the Error state.
+This is outlined in the decision tree in INSERT FIGURE.
+
+\paragraph{}
+The wait to Open state is a waiting state that holds the storage task until the logging flag is high.
+If the logging flag goes high, the next state is Open.
+The task can be held in this state indefinately if the logging flag stays low.
+This can occur if the logging switch on the dashboard is disabled or removed.
+
+\paragraph{}
+The Open state is responsible for the creation of files.
+Once the task enters this state, it searches for the next available file name and attempts to create the file.
+The file is created and opened properly if the return of the open function, which is a wrapper around the FatFS f\_open function, returns a non-null value.
+This state will attempt to open a file three times before deciding it is unable to.
+This is outlined in INSERT FIGURE.
+If the file is opened properly, the next state is the Wait to Write state.
+If the state is unable to open a file, the next state is the Error state.
+
+\paragraph{}
+The Wait to Write state is another waiting state that holds the storage task until new data is received.
+Once a new piece of data is received from the CAN bus or from reading the onboard sensors, this state transitions to the Write state.
+If there are no nodes on the CAN network or a CAN error and all the onboard sensors are disabled, the storage task can be held indefinately in this state.
+
+\paragraph{}
+The Write state is responsible for actually writing the most recent data to the SD card.
