@@ -128,6 +128,144 @@ If the state is unable to open a file, the next state is the Error state.
 The Wait to Write state is another waiting state that holds the storage task until new data is received.
 Once a new piece of data is received from the CAN bus or from reading the onboard sensors, this state transitions to the Write state.
 If there are no nodes on the CAN network or a CAN error and all the onboard sensors are disabled, the storage task can be held indefinately in this state.
+It is determined that a piece of data is new by checking a boolean value for each data segment.
+These booleans are set to true in the communication task or the sensors task.
 
 \paragraph{}
 The Write state is responsible for actually writing the most recent data to the SD card.
+Once the task enters this state, it iterates through all possible pieces of data to see if they have been updated.
+If a piece of data has been updated, a data packet is created with the data id, the data, and then a checksum to improve resiliency.
+This packet is then written to the SD write buffer.
+Once all updated messages are written to the SD write buffer, the buffer is then flushed to the SD card.
+This is done on each iteration as opposed to waiting for the buffer to fill up to reduce the blocking when writing to the disk to reduce the potential risk of missing data updates.
+This is outlined in INSERT FIGURE.
+If the writes and flush are completed sucessfully and logging is true, the next state is Wait to Write.
+If the writes an flush are completed suggessfully and logging is false, the next state is Close.
+If the writes or flush fail, the next state is Error.
+Once the writes are complete, the booleans that are true for a data segment are reset to false.
+
+\paragraph{}
+The final normal state is the Close state.
+This state is responsible for safely closing the current open file.
+If the file fails to close properly, the next state is the Error state.
+If the file closes properly, the next state is the Wait to Open state.
+
+\subsection{Communication Task}
+
+\paragraph{}
+The next task is the communication task.
+This task is responsible for configuring and managing communication on the CAN bus.
+In order to do this, the ACANFD\_STM32 library was modified to support the operations needed to configure the CAN controller into CANFD mode and to read and write from the bus.
+One requirement of this library is that the CAN IRQ handler functions need to be defined by the user.
+These functions are defined in the main file and must be named properly to use the proper CAN controller, such as adding a 1 or 2 to distinguish between CAN1 and CAN2 hardware.
+
+\paragraph{}
+The state machine for the communication task contains four states.
+These states are:
+\begin{itemize}
+	\item Initialize
+	\item Wait for Message
+	\item Process Message
+	\item Error
+\end{itemize}
+As can be seen in \cref{fig:CommsDiagram}, the two main states that will be looped between are the Wait for Message and Process Message states that handle reading and processing messages.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\linewidth]{CommsStateMachine.png}
+	\caption{Communication State Diagram}
+	\label{fig:CommsDiagram}
+\end{figure}
+
+\paragraph{}
+The Initialize state is responsible for configuring the settings and initializing the CAN controller into CAN FD mode.
+In order to configure the hardware into CAN FD mode, the pins that connect from the internal CAN controller to the external CAN transceiver need to be set to their alternate functions and the bits in the configuration register need to be set to Normal FD mode.
+Additionally, the desired arbitration clock rate and data clock rate need to be set as well so that the bus is transmitting at the desired speed.
+If there are no issues when configuring the CAN controller, the next state is set to Wait for Message.
+If there are any issues, the next state is set to Error.
+
+\paragraph{}
+The Wait for Message state is the state that is directly responsible for reading data off of the CAN bus.
+As is described in INSERT FIGURE, if the CAN bus has a message available to be read, it reads the contents into a message variable.
+If no messages are ever received, it is possible to become stuck in this state indefinately.
+If there is a message received, the next state is set to Process Message.
+If there are errors reading the message, the next state is set to Error.
+Only one message will be read in this state, so if there are multiple messages ready to be read, the system will need to enter this state multiple times.
+
+\paragraph{}
+The Process Message state is responsible for taking the data from a received CAN message and moving it into the section of data shared by all tasks.
+Additionally, in order to indicate to the storage task that a piece of data is new, an array of booleans that is equal in size to the number of data blocks exists.
+When a message is received, the boolean that corresponds to the same integer value as the index of the received data block is updated to true.
+This boolean will be reset to false in the storage task.
+As is detailed in INSERT FIGURE, this state first checks if the CAN ID of a message is valid, something expected or able to be handled.
+It then copies the contents of the CAN message into the corresponding data segment in the shared data.
+Since it is expected that the CAN messages will fully correspond to the data segment and that the data segment will be byte aligned with no gaps, a simple memcpy operation can be done to move the data from the received message into the shared data.
+If this processing is completed without error, the next state is set back to Wait for Message.
+If there are any issues with the CAN message or the copying of the data, the next state is set to Error.
+
+\paragraph{}
+The final state of the communication task is the Error state.
+This state is responsible for handling any errors that occur as a result of initialization, reading CAN messages, or processing the CAN messages.
+The most common errors that can occur are the bus failing to initialize properly and an invalid or unhandled CAN message IDs are received.
+The most likely cause of the CAN hardware not initializing properly are improper wiring on the PCB or invalid configuration options or settings.
+In either of these scenarios, recovery is not possible and the task must be held in the Error state.
+In the event of an invalid CAN ID received, the system can continue to operate sucessfully, and the task can be recovered by returning to the Wait for Message state.
+In the shared data, a flag is set high indicating a fault in the communication task.
+
+\subsection{Radio Communication Task}
+
+\paragraph{}
+The radio communication task handles the communication with the radio module and the transmission of from the vehicle to the pit area.
+The Xbee module handles the over-the-air transmission of data.
+The Xbee module is configured seperately, before being installed into the DAQ, accepting a UART communication line and relaying that data over the error.
+The module is not configured to handle lost packets, invalid packets, or any issues related to the data transmission as dropping packets is not a catastrophic failure.
+
+\paragraph{}
+The radio communication task has five states:
+\begin{itemize}
+	\item Initialize
+	\item Wait
+	\item Build
+	\item Send
+	\item Error
+\end{itemize}
+The state machine describing how to transition between these states can be seen in \cref{fig:RadioDiagram}.
+Similarly to the storage task, there is a wait state whose only function is to hold the task until a certain condition is met.
+This is the only state that cannot enter the Error state.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\linewidth]{RadioStateMachine.png}
+	\caption{Radio Communication State Diagram}
+	\label{fig:RadioDiagram}
+\end{figure}
+
+\paragraph{}
+The Initialize state is responsible for configuring the UART communication interface with the Xbee radio.
+The Arduino HardwareSerial library handles configuring the registers to their alternate functions, so long as the proper tx and rx pins are set.
+The baud rate is configured to by 57600 to comply with the Xbee's configuration.
+If the UART initializes sucessfully, the next state is the Wait state.
+If the UART communication is not initialized successfully, the next state is the Error state.
+
+\paragraph{}
+The Wait state holds the radio communication task until it is time to send a packet over-the-air.
+If a one second timer has triggered, the next state is the Build state.
+
+\paragraph{}
+The Build state is responsible for creating a single packet that will then be transmitted over-the-air.
+Similarly to the storage task, this state checks which data segments have been updated and adds each segment that has been updated to the packet.
+The data id and the length of data are added before each data segment and a checksum is computed and added to the end of the data segment.
+Differently from the storage task, each updated data segment is added to one single packet.
+If the packet is created successfully, the next state is the Send state.
+If there are issues creating the packet, the next state is the Error state.
+
+\paragraph{}
+The Send state writes the created packet over UART one byte at a time.
+
+If the last byte of the packet is sent with no errors, the next state is set to the Wait state.
+If there are any errors
+
+
+\subsection{Sensors Task}
+
+\subsection{Health Monitoring Task}
