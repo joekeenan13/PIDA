@@ -260,12 +260,34 @@ If the packet is created successfully, the next state is the Send state.
 If there are issues creating the packet, the next state is the Error state.
 
 \paragraph{}
-The Send state writes the created packet over UART one byte at a time.
+The Send state writes the created packet over UART to the Xbee module.
+In order to reduce issues related to filling up the hardware buffer, the UART writes just a single byte at a time.
+Additionally, there is a check to ensure that the hardware buffer is not full and can accept the byte.
+The reason for this is that the write function that puts a byte or array of bytes onto the hardware buffer does not check if the buffer is full, and it will hold the program until the byte or bytes in the array are written to the buffer.
+This makes it very likely to cause interruptions in the code, harming the running of the other tasks.
+Once all bytes are written to the buffer, the next state is set back to the Wait state.
+If there are any issues with writing a byte, the next state is the Error state.
 
-If the last byte of the packet is sent with no errors, the next state is set to the Wait state.
-If there are any errors
+\paragraph{}
+The last state in the radio communication task is the Error state.
+Similalry to the communication state, if there are any issues setting up the UART communication line, it is likely a result of faulty wiring or invalid paramaters.
+In this event, the error is typically not recoverable.
+If the error occurs withing the Build or Send state, the error can be recovered.
 
 
 \subsection{Sensors Task}
 
+\paragraph{}
+The sensors taks is responsible for reading the DAQ's onboard sensors.
+These sensors include the onboard IMU and GPS, as well as a few analog sensor inputs.
+The IMU and GPS both communicate over I2C and the analog sensors utilize the internal ADC of the STM32.
+
+
 \subsection{Health Monitoring Task}
+
+\paragraph{}
+The health monitoring task detects and reports issues with the system.
+This is done in two ways.
+The first is by toggling on-board LEDs to act as visual indicators in the event of issues.
+These issues include things such as CAN failures, SD failures, and a heartbeat.
+The second is by reporting faults over CAN so that other nodes, in particular a dashboard, can know that there are issues.
