@@ -4,7 +4,7 @@
 The majority of the scope of this project was related to the software and firmware design and implementation.
 This section details the design of the software, it's implementation, as well as issues encountered and the ways in which they were addressed or what needs to happen to address the issue.
 
-\subsection{High Level Design and Implementation}
+\subsection{High-Level Design and Implementation}
 
 \paragraph{}
 The software for this DAQ is designed and implemented to be run in a pseudo-parallel manner.
@@ -70,6 +70,13 @@ Specifically, this includes variables for storing all of the data that needs to 
 Since this code runs sequentially, there are no issus of different tasks attempting to read from or write to the same chunk of the shared data section at the same time.
 As a result, there are no added protections for this scenario.
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\linewidth]{SharedData.png}
+	\caption{Storage State Diagram}
+	\label{fig:StorageDiagram}
+\end{figure}
+
 \subsection{Storage Task}
 
 \paragraph{}
@@ -98,9 +105,9 @@ The waiting states are incapable of entering the error state, since their sole p
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.75\linewidth]{SDStateMachine.png}
-	\caption{Storage State Diagram}
-	\label{fig:StorageDiagram}
+	\includegraphics[width=0.75\linewidth]{SharedData.png}
+	\caption{Shared Data Section Diagram}
+	\label{fig:SharedData}
 \end{figure}
 
 \paragraph{}
