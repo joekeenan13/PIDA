@@ -58,9 +58,17 @@ Additionally, not every family of microcontrollers from STM receives the same su
 One specific issue that arose was a versioning issue for STM32duino.
 In versions 18.0.0 onwards, the memory sizes of the H7 family of STM microcontrollers was updated incorrectly, causing code to not run and the debugger to be unusable.
 This issue was resolved by reverting the version of STM32duino back to 17.6.0.
+The PlatformIO team have been notified of this issue and have responded that they are working on a fix.
 Other issues that arose that were not issus on the Teensy platform were the signedness of pins on the STM32, multiple timers on the same timer channels, timer registers having different sizes, and the same interrupt being tied to multiple pins.
 One of the largest benefits of this change was having access to the debugger.
 Without access to a deebugger, many of these issues would not have been solved or would have taken weeks or longer to debug.
+
+\paragraph{}
+The last main component that impacts each part of this system is a shared data segment.
+This shared data segment is what allows for all of the tasks to communicate with each other.
+Specifically, this includes variables for storing all of the data that needs to be logged, flags for indicating when data has been updated, and fault flags to indicate when a task is encountering problems.
+Since this code runs sequentially, there are no issus of different tasks attempting to read from or write to the same chunk of the shared data section at the same time.
+As a result, there are no added protections for this scenario.
 
 \subsection{Storage Task}
 
@@ -98,7 +106,7 @@ The waiting states are incapable of entering the error state, since their sole p
 \paragraph{}
 The Initialize state is responsible for creating the SD instance.
 This includes configuring the SDIO communication interface that physically connects the SD card to the microcontroller as well as mounting the FatFS filesystem that is used by the SD card.
-The creation of the SD and File objects relies on STM32SD library.
+The creation of the SD and File objects relies on STM32SD library \cite{STM32SDGithub}.
 This library provides the functions for initializing the SD interface and for mounting the filesystem.
 One major issue is present in this library that needed to be fixed.
 The library expects the FatFS implementation to have a function f\_unmount, which can be used to unmount the filesystem.
@@ -155,7 +163,7 @@ If the file closes properly, the next state is the Wait to Open state.
 \paragraph{}
 The next task is the communication task.
 This task is responsible for configuring and managing communication on the CAN bus.
-In order to do this, the ACANFD\_STM32 library was modified to support the operations needed to configure the CAN controller into CANFD mode and to read and write from the bus.
+In order to do this, the ACANFD\_STM32 library \cite{ACANFDGithub} was modified to support the operations needed to configure the CAN controller into CANFD mode and to read and write from the bus.
 One requirement of this library is that the CAN IRQ handler functions need to be defined by the user.
 These functions are defined in the main file and must be named properly to use the proper CAN controller, such as adding a 1 or 2 to distinguish between CAN1 and CAN2 hardware.
 
@@ -281,13 +289,105 @@ If the error occurs withing the Build or Send state, the error can be recovered.
 The sensors taks is responsible for reading the DAQ's onboard sensors.
 These sensors include the onboard IMU and GPS, as well as a few analog sensor inputs.
 The IMU and GPS both communicate over I2C and the analog sensors utilize the internal ADC of the STM32.
+These sensor readings are then added to the shared data section so that they can be written to the SD card.
 
+\paragraph{}
+This task has five states:
+\begin{itemize}
+	\item Initialize
+	\item Wait
+	\item Read
+	\item Send
+	\item Error
+\end{itemize}
+The state machine describing the transitions can be seen in \cref{fig:SensorsDiagram}.
+Similarly to the radio tasks, there is a time based waiting task and four additional tasks for functionality.
+Differently from the radio communication task is that there will be two states that cannot enter the error state, the Wait state and the Send state.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\linewidth]{SensorsStateDiagram.png}
+	\caption{Sensors State Diagram}
+	\label{fig:SensorsDiagram}
+\end{figure}
+
+\paragraph{}
+The Initialize state is repsonsible for configuring the periphreals needed to communicate with sensors and for configuring any sensors when it is applicable.
+Since both the IMU and GPS communicate over I2C, two I2C busses need to be configured.
+Additionally, each of these sensors need to be configured, including items such as setting up the sampling rate, any on board filtering, or changing the sensor range.
+For the basic analog sensors, the pins need to be configured to use their ADC alternate function.
+The arduino pinMode function takes care of this.
+Additionally, the bit resolution also needs to be configured.
+In order to comply with the requirements of this project, this must be at least 10 bits.
+If everything is configured properly, the next state is the Wait state.
+If there are any issues, the next state is the Error state.
+
+\paragraph{}
+The Wait state holds the task for a specified amount of time.
+The purpose of this is to ensure that sensors are sampled at fixed intervals for the purpose of adding filters.
+As a result, the amount of time the task is held in this state is determined by the desired sampling rate of the sensors that pre-processing filtering is done on.
+Since the only thing this state does is wait for a time condition to be met, it is impossile to fault and as such cannot enter the Error state.
+Once the time condition is met, the next state is the Read state.
+In the event that no pre-processing of the data is done, the time held in this state is 0 and the next state is immediately set to be the Read state.
+
+\paragraph{}
+The Read state is responsible for reading the data from sensors.
+To do this, the analog channels need to be sampled and samples need to be requested from the sensors communicating over I2C.
+Each sensor is only sampled if there were no issus with the configuration of the sensor.
+If any pre-processing is desired, it will occur in this state directly after reading a sensor's sample.
+At this point in time, there is no pre-processing, so there are no filter implementations directly on-board the DAQ.
+If all sensors are sampled without issue and the number of samples taken is equal to the number of samples needed for a filter, the next state is set to the Send state.
+If the sensors are all sampled without issue, but the number of samples taken is fewer than the number of samples needed for a filter, the next state is the Wait state.
+If there were any issues sampling the sensors, the next state is set to be the Error state.
+Issues can arise if there is no response from a request from an I2C sensor, or if an analog sensor returns a value outside of it's expected range.
+In the event that there is no pre-processing of data, each time the sensors are sampled, the next state will become the Send state.
+
+\paragraph{}
+The Send state is a simple state that updates the data in the shared data section and sets the flag that this data is new to true for the storage task and radio communication task.
+Since the code is sequential, there are no risks of conflicts arising from different tasks reading or writing at the same time.
+As a result, it is not possible for this state to fault, and as a result cannot enter the Error state.
+Once the shared data section is updated and the flags indicating that the data is new is set to be true, the next state is set to the Wait state.
+
+\paragraph{}
+The Error state handles any issues that arise from configuring the communication with sensors,the configuration of the sensors themselves, or sampling of the sensors.
+In the event that the communication interface fails to initialize properly, it is unlikely to be resolved.
+A flag is set in the shared data section to inidicate this.
+However, if any of the communication interfaces initialize properly, the task as a whole is recoverable and receiving some of the data is better than receiving none of the data.
+The same is true of the sensors themselves.
+If any of the sensors fail to initialize, a flag is set in the shared data section to indicate this, but the task can continue without this sensor.
+Reading the sensors behaves in a similar way.
+If a sensor fails to read properly, a flag is set in the shared data section and the sensor is disabled in the Read state.
+The state machine then recovers into the Wait state.
 
 \subsection{Health Monitoring Task}
 
 \paragraph{}
 The health monitoring task detects and reports issues with the system.
-This is done in two ways.
-The first is by toggling on-board LEDs to act as visual indicators in the event of issues.
+This is done by toggling on-board LEDs to act as visual indicators in the event of issues.
 These issues include things such as CAN failures, SD failures, and a heartbeat.
-The second is by reporting faults over CAN so that other nodes, in particular a dashboard, can know that there are issues.
+
+\paragraph{}
+This task is the simplest state machine with just two states and no Error state.
+These are the initialization state and the update state.
+The diagram for this state machine can be seen in \cref{fig:HealthDiagram}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\linewidth]{HealthStateDiagram.png}
+	\caption{Health Monitoring State Diagram}
+	\label{fig:HealthDiagram}
+\end{figure}
+
+\paragraph{}
+The initialization state is responsible for configuring the pins for LEDs.
+Since all GPIO pins on an STM32 can be configured to be outputs, it is not possible to fail to initialize.
+As a result, the next state is always set to be the Update state.
+
+\paragraph{}
+The update state checks the status of the other tasks and toggles LEDs as needed.
+Additionally, the heartbeat is updated in this state.
+Similarly to the initialization state, since this state is only performing digital writes, or updating the output data register, it is not able to cause a fault.
+The heartbeat LED is toggled once every half second, for a total frequncy of 1 Hz.
+The indicator LEDs directly use booleans from the shared data section to write a value to the LED.
+This means that the output of those LEDs is determined by the other tasks.
+The health monitoring task remains in the update state for the entire time the system is running.
