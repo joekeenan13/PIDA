@@ -1,10 +1,27 @@
 \chapter{System Testing and Analysis}
 
-\subsection{SD Testing}
+\section{SD Testing}
 
-\subsection{Data Testing}
+\paragraph{}
+The first part of this project that needed to be tested was the creating and writing to files on the SD card.
+In order to do this, a simple test program creating a csv file with dummy data was made.
+During this testing, there were several issues discovered.
+The first was that the STM32SD library does not define the function f\_unmount even though it is used in the library.
+This function is typically a wrapper around f\_mount and passing in 0's for the filesystem and option.
+By updating the f\_unmount function call to a f\_mount with the added paramaters, the library worked fine.
 
-\subsection{CAN Testing}
+\paragraph{}
+After the issue with the library was resolved, the next issues were related to the hardware.
+The pinout for the SDIO interface had some conflicts resulting in the SD card being connected to non SDIO pins.
+This issue required a respin of the hardware to fix, delaying testing by several weeks.
+During this time, attempts were made to rework the PCB to connect the SD card to the correct microcontroller pins.
+It was discovered while attempting to run the test program that there were stability problems with the reworked connections.
+There were a few instances where the SD object would initialize properly, inidicating that the library was working successfully.
+Once the respinned board arrived, it was confirmed that the SD library was functioning and the test program sucessfully created a dummy csv file.
+
+\section{Data Testing}
+
+\section{CAN Testing}
 
 \paragraph{}
 There were two parts of CAN that needed to be tested.
@@ -18,3 +35,7 @@ This test was completed by using a fixed ID of 1, a data length of 32 bytes, and
 After the CAN bus was confirmed to work and data was transmitted, CAN loading also needed to be tested.
 This could be done empirically, knowing the total amount of data being transmitted in each message and the frequency that each message was being sent at.
 To confirm this calculation, 
+
+\section{Radio Testing}
+
+\paragraph{}

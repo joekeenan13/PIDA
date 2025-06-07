@@ -1,8 +1,32 @@
 \chapter{Conclusion}
 
-\subsection{Conclusion}
+\section{Design and Testing Conclusion}
 
 \paragraph{}
 The custom DAQ has been used in testing going back for the past two months.
 In addition to this, it was used at the 2025 Arizona Baja SAE competition during the first week of May.
-During these instances, the DAQ has performed extremely well, having logged over 30 hours worth of data.
+During these instances, the DAQ has performed extremely well, having logged over 30 hours worth of data to aggregate over 10 GB worth of data.
+This data has been very useful in debugging issues related to hardware failures and software failures within the transmission.
+One specific issue that was found at competition was a wrong configuration found for a motor controller.
+This was discovered by seeing the motor saturate much earlier than it should have.
+With this discovery, we were able to update the motor controller configuration and proceded to improve our acceleration performance by 0.3 seconds to place 3rd in the event.
+
+\paragraph{}
+The choice to use CAN FD instead of CAN was a smart choice, as there have been no throughput issues.
+Additionally, it reduced the number of IDs that the DAQ must support, making it easier to validate all messages are being sent and received properly.
+This has come at the cost of all nodes that communicate with the DAQ needing to support CAN FD instead of CAN 2.0, limiting options for OEM CAN sensors.
+However, since this project is for an engineering club, different sensing nodes can be created as projects for new members.
+Additionally, microcontroller on nodes must include a CAN FD controller or an external CAN FD controller must be added to the hardware to support communication.
+
+\paragraph{}
+The wireless communication was a neat feature that has not been present on other OEM data logger solutions.
+For the purpose of the team it is a useful feature, but if this project were to be a professional product, this feature would likely be removed due to its niche use case.
+This is due to the additional costs of adding a radio module and an antenna.
+If there was demand for this feature, it could be added as a seperate unit or as an extra paid feature.
+Despite this, when it is working, this feature has provided enough value that it is a worthwhile inclusion.
+
+\paragraph{}
+The largest failure of this project was the failure to add support for downloading files via USB.
+Without this, the SD card must be removed from the system to recover files.
+In most data loggers, files can be downloaded over USB or Ethernet or other interfaces that do not require opening up the hardware.
+This was one of the features requested by the customer and if the project were to be continued in the future, this is the first area for improvement.
