@@ -8,7 +8,7 @@ This will include the hardware unit, the software and firmware required to run t
 
 \paragraph{}
 The customer for this project is the Cal Poly Racing Baja Team.
-As the Electrical Technical Director of this team for this year, I can also be considered the customer for this product and as such am reesponsible for defining the customer requirements for this project.
+As the Electrical Technical Director of this team for this year, I can also be considered the customer for this product and as such am responsible for defining the customer requirements for this project.
 These requirements come from a combination of the existing systems on the car, desired data that is wanted to be collected, the ability to expand the desired sensors, the programming and data collection experience of the team, and reusability.
 
 \paragraph{}
@@ -22,19 +22,19 @@ The customer requirements are as follows:
 	\item An IMU and GPS to monitor vehicle dynamics
 	\item The ability to directly wire some sensors to the DAQ unit
 	\item The data must be in a format that can be easily viewed
-	\item Low enough powere draw to not impact the battery life of the vehcile
+	\item Low enough power draw to not impact the battery life of the vehicle
 \end{itemize}
 
 \paragraph{}
-The storage rate comes from the controls loop rate of the fasted controller on the vechicle.
+The storage rate comes from the controls loop rate of the fasted controller on the vehicle.
 Since there are no current plans to increase the controller frequencies or add any sensors that require a faster sampling rate, this can be the minimum achievable collection rate for a while.
 The endurance event at a baja event lasts for four hours.
-Accomondating for time spent waiting for race to start and any final checks just before the event, five hours should accomondate a full endurance days worth of data.
+Accommodating for time spent waiting for race to start and any final checks just before the event, five hours should accommodate a full endurance days worth of data.
 In order to quickly diagnose issues on the vehicle, knowing what is happening before the car arrives back in the pits is useful.
 Downloading files directly off the DAQ has been an issue for several years and significantly delays the processing of data.
 Additionally, it often was the case that the user would forget to add the storage device back onto the system, and no data would be collected until the system was reopened to analyze data again.
 The ability for the system to be modular and add other sensors is also important.
-It is often the case that there is a sensor that is wanted for a single test but would not want to be left on the vehicle permanantly.
+It is often the case that there is a sensor that is wanted for a single test but would not want to be left on the vehicle permanently.
 For a similar reason, being able to directly wire a sensor to the DAQ is useful.
 Having an onboard GPS and IMU are critical sensors for monitoring vehicle dynamics and they are always wanted.
 Finally, since the majority of the team are mechanical engineers, it is important that all data is easily accessible and that everyone is able to view the data.
@@ -66,7 +66,7 @@ These requirements reflect the technical specifications that the rest of the sys
 \end{table}
 
 \paragraph{}
-These engineering requirements are mostly tied to the customer requirements regarding the data storage rate and the desire to understand the behaviour of the car's dynamics.
+These engineering requirements are mostly tied to the customer requirements regarding the data storage rate and the desire to understand the behavior of the car's dynamics.
 Additionally, the length of an endurance event was used to derive several engineering requirements as well.
 The rest of the customer requirements come down to design choices and less down to numbers.
 
@@ -75,22 +75,22 @@ The rest of the customer requirements come down to design choices and less down 
 \paragraph{}
 There are three main use cases for this system:
 \begin{itemize}
-	\item[(1)] To collect vehcile and subsystem data to validate design models
+	\item[(1)] To collect vehicle and subsystem data to validate design models
 	\item[(2)] To monitor vehicle health during drives at testing and competition
 	\item[(3)] To diagnose unexpected failures of a system
 \end{itemize}
 
 \paragraph{}
 In the first case, an engineer is attempting to validate a braking model for the car.
-The model is a 9 degree of freedom model and uses brake pressure, shock heights, vehcile acceleration, and other paramaters to determine when the wheels will "lock", or break traction.
+The model is a 9 degree of freedom model and uses brake pressure, shock heights, vehicle acceleration, and other parameters to determine when the wheels will "lock", or break traction.
 In order to validate the model for our design for information for the next design cycle as well as the design event part of competition, these sensor's data is needed.
 This is the case for several different vehicle dynamics models used to design the baja car.
 
 \paragraph{}
 In the second case, the car is driving in the endurance event of a competition.
 During an endurance event, the car will be driving continuously for several hours without the ability to regularly inspect parts or systems for failure.
-To maintain an understanding of the vehicles health and criticial systems during this event, we can view wirelessly transmitted data.
-This helps the pit crew know if or when to expect the vehcile coming back to the pits for a repair.
+To maintain an understanding of the vehicles health and critical systems during this event, we can view wirelessly transmitted data.
+This helps the pit crew know if or when to expect the vehicle coming back to the pits for a repair.
 
 \paragraph{}
 In the third case, we are at testing or at competition, and something breaks or starts performing worse unexpectedly.

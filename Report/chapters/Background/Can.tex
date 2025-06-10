@@ -11,7 +11,7 @@ However, only utilizing a single differential pair means that a node can only tr
 \paragraph{}
 CAN is an addressed based communication protocol.
 An address can correspond to a specific node or to a specific message.
-Since CAN only utilizes a signle differential signal, it must negotiate to determine which node is transmitting and which nodes are receiving.
+Since CAN only utilizes a single differential signal, it must negotiate to determine which node is transmitting and which nodes are receiving.
 The lowest address trying to be transmitted wins the negotiation, meaning that priority can be assigned to messages by assigning a lower value for an address to the message.
 This addressing and need to negotiate also adds overhead to the transmission, reducing overall data throughput.
 Additionally, there are control bits, cyclical redundancy (CRC) bits, and end of frame (EoF) bits that all also contribute to overhead.
@@ -49,4 +49,4 @@ These two new characteristics combined provide for a much more efficient transfe
 In order to use CAN FD, it must be supported by the hardware, including both the CAN controller and the CAN transceiver.
 Additionally, to rely solely on CAN FD, each node on the bus must be using CAN FD.
 Otherwise, conflicts may occur impacting frames being sent or received.
-The system would theoretically operate without too many issue, but the control section of the frame would be different sizes to accomondate the additional control bits needed for the CAN FD frame.
+The system would theoretically operate without too many issue, but the control section of the frame would be different sizes to accommodate the additional control bits needed for the CAN FD frame.

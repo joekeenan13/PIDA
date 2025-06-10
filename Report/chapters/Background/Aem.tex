@@ -2,16 +2,16 @@
 
 \paragraph{}
 AEM designs data loggers and dashboards for testing purposed for cars and other vehicles.
-These dataloggers connect to their different modules that connnect to various can sensors and breakouts for different types of sensors.
+These data loggers connect to their different modules that connect to various can sensors and breakouts for different types of sensors.
 Some of these modules also come with an inertial measurement units (IMU) and global positioning system (GPS) which are useful for understanding the entire vehicle state.
 
 \subsection{AEM Loggers}
 
 \paragraph{}
-There are several different AEM loggers available for purcahse.
+There are several different AEM loggers available for purchase.
 The two major loggers available for purchase are the AEM CD-5L and the AEM CD-7L.
 The CD-5L costs \$1,574.95 without the IMU or GPS and the CD-7L costs \$2,081.95 without the IMU or GPS \cite{AEMSite}.
-This cost provides access to data logging features as well as a dashbaord display.
+This cost provides access to data logging features as well as a dashboard display.
 These dashboards can be configured to display different information to a driver or engineer to get a snapshot of the current state of the vehicle.
 A computer can be easily connected to these devices to upload different configurations as well as to download the logged files.
 
@@ -23,7 +23,7 @@ A computer can be easily connected to these devices to upload different configur
 \end{figure}
 
 \paragraph{}
-The loggers log files in a comma seperated file (csv) format for ease of use with tools such as Matlab or Python for visualizing the data.
+The loggers log files in a comma separated file (csv) format for ease of use with tools such as Matlab or Python for visualizing the data.
 These files can also be visualized on the dashboard as well to give a quick glimpse at explaining what is happening.
 
 \subsection{AEM Add-Ons}
@@ -50,14 +50,14 @@ The AEM loggers can also interface with traditional analog or digital sensors so
 \paragraph{}
 In addition to wired sensors, AEM is also compatible with some wireless sensors for things such as tire pressure monitoring systems (TPMS) or fuel sensors.
 In order to communicate with these wireless sensors, a wireless module in needed or a logger with wireless capabilities is needed.
-AEM utilies a propietary system call X-Wifi to connect to these wireless sensors that is already a part of their CD5 and CD7 loggers.
+AEM utilizes a proprietary system call X-Wifi to connect to these wireless sensors that is already a part of their CD5 and CD7 loggers.
 AEM's sensors that can utilize the X-Wifi capabilities of the logger are priced Similarly to their more traditional wired sensors.
 
 \subsection{DBC Files}
 
 \paragraph{}
-In addition to AEM specific sensors, the AEM dataloggers can interface with any custom hardware that is outputting it's data over CAN.
+In addition to AEM specific sensors, the AEM data loggers can interface with any custom hardware that is outputting it's data over CAN.
 In order to configure the AEM to read data from a CAN bus, including its own CAN capable sensors, a configuration file must be made to tell the logger which value corresponds to which bytes of a specific CAN frame.
-A CAN Database file (.dbc) is a standarized file format for configuring which is able to describe what information is contained within a CAN frame.
+A CAN Database file (.dbc) is a standardized file format for configuring which is able to describe what information is contained within a CAN frame.
 An example .dbc file can be seen in \cref{lst:ex_dbc} in the appendix.
-AEM utilizes this file format for its dataloggers to interface with a CAN network so long as the proper hardware add-ons are purchased.
+AEM utilizes this file format for its data loggers to interface with a CAN network so long as the proper hardware add-ons are purchased.

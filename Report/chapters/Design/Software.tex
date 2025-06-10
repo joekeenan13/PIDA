@@ -11,7 +11,7 @@ The software for this DAQ is designed and implemented to be run in a pseudo-para
 This means that there are several different tasks that are running sequentially, with each task running small chunks or sub-tasks during each cycle.
 Each task is then designed as a state machine to segment itself into these smaller sub-tasks.
 In order for each of these tasks to communicate with each other, there is one group of data that each task can reference.
-Since this is a sequential action still, conflicts will not occur and ther does not need to be any extra protections for accessing the same data or variable at the same time.
+Since this is a sequential action still, conflicts will not occur and there does not need to be any extra protections for accessing the same data or variable at the same time.
 
 \paragraph{}
 The DAQ runs four main tasks that are continuously cycled through:
@@ -39,7 +39,7 @@ As can be seen in \cref{fig:SoftwareTasks}, these tasks all run sequentially bef
 
 \paragraph{}
 Object-oriented programming (OOP) is utilized significantly for this design.
-Every task and sensor is a class that have individiual constructors depending on the needs of the task.
+Every task and sensor is a class that have individual constructors depending on the needs of the task.
 Additionally, each task gets its own enum classes to define the various states for each state machine.
 There are two parent classes that are utilized by everything.
 For different tasks, there is an abstract task class that forces an implementation for a function that runs the task and requires the intercommunication data to be passed in.
@@ -49,19 +49,19 @@ Additionally, this class implements a read function that returns the current sen
 \paragraph{}
 Since this project is based on the Arduino platform, several of the basic tasks for interacting with the hardware are handled by the platform.
 This includes things such as setting the mode of a pin, reading and writing from data registers, configuring UART, SPI, and SDIO interfaces, and configuring the interrupt vector table.
-Even with the configuration of these periphreals being handled by Arduino, they still need to be configured with the proper settings to be used.
+Even with the configuration of these peripherals being handled by Arduino, they still need to be configured with the proper settings to be used.
 Despite all falling under the Arduino umbrella, each platform is maintained independently of each other.
 The people maintaining the Arduino platform for Teensy and the people maintaining the Arduino platform for STM do not communicate with each other, and as a result there are some implementation differences that exist between different hardware platforms using Arduino.
 
 \paragraph{}
-Additionally, not every family of microcontrollers from STM receives the same support or even the sample supported functions from the Arduino framework.
+Additionally, not every family of microcontroller from STM receives the same support or even the sample supported functions from the Arduino framework.
 One specific issue that arose was a versioning issue for STM32duino.
 In versions 18.0.0 onwards, the memory sizes of the H7 family of STM microcontrollers was updated incorrectly, causing code to not run and the debugger to be unusable.
 This issue was resolved by reverting the version of STM32duino back to 17.6.0.
 The PlatformIO team have been notified of this issue and have responded that they are working on a fix.
 Other issues that arose that were not issus on the Teensy platform were the signedness of pins on the STM32, multiple timers on the same timer channels, timer registers having different sizes, and the same interrupt being tied to multiple pins.
 One of the largest benefits of this change was having access to the debugger.
-Without access to a deebugger, many of these issues would not have been solved or would have taken weeks or longer to debug.
+Without access to a debugger, many of these issues would not have been solved or would have taken weeks or longer to debug.
 
 \paragraph{}
 The last main component that impacts each part of this system is a shared data segment.
@@ -100,7 +100,7 @@ These state are:
 \end{itemize}
 In this state machine, there are two types of states.
 These are action states and waiting states.
-The action states are all capable of entering the error state if their action fails unexpectandtly.
+The action states are all capable of entering the error state if their action fails unexpectedly.
 The waiting states are incapable of entering the error state, since their sole purpose is to wait for certain conditions needed for their corresponding action state.
 
 \begin{figure}[H]
@@ -118,16 +118,15 @@ This library provides the functions for initializing the SD interface and for mo
 One major issue is present in this library that needed to be fixed.
 The library expects the FatFS implementation to have a function f\_unmount, which can be used to unmount the filesystem.
 This function is not present in the FatFS implementation provided by STM32duino.
-To resolve this issue, the function call can be replaced with a f\_mount function call with the approriate arguments, or a wrapper function f\_unmount can be created that calls f\_mount with the approriate arguments.
+To resolve this issue, the function call can be replaced with a f\_mount function call with the appropriate arguments, or a wrapper function f\_unmount can be created that calls f\_mount with the appropriate arguments.
 The former was used in this project.
 If the returns of both the SD initialization and the FatFS initialization are success codes, the next state is Wait to Open.
 If any other codes are returned, the next state is the Error state.
-This is outlined in the decision tree in INSERT FIGURE.
 
 \paragraph{}
 The wait to Open state is a waiting state that holds the storage task until the logging flag is high.
 If the logging flag goes high, the next state is Open.
-The task can be held in this state indefinately if the logging flag stays low.
+The task can be held in this state indefinitely if the logging flag stays low.
 This can occur if the logging switch on the dashboard is disabled or removed.
 
 \paragraph{}
@@ -135,14 +134,13 @@ The Open state is responsible for the creation of files.
 Once the task enters this state, it searches for the next available file name and attempts to create the file.
 The file is created and opened properly if the return of the open function, which is a wrapper around the FatFS f\_open function, returns a non-null value.
 This state will attempt to open a file three times before deciding it is unable to.
-This is outlined in INSERT FIGURE.
 If the file is opened properly, the next state is the Wait to Write state.
 If the state is unable to open a file, the next state is the Error state.
 
 \paragraph{}
 The Wait to Write state is another waiting state that holds the storage task until new data is received.
 Once a new piece of data is received from the CAN bus or from reading the onboard sensors, this state transitions to the Write state.
-If there are no nodes on the CAN network or a CAN error and all the onboard sensors are disabled, the storage task can be held indefinately in this state.
+If there are no nodes on the CAN network or a CAN error and all the onboard sensors are disabled, the storage task can be held indefinitely in this state.
 It is determined that a piece of data is new by checking a boolean value for each data segment.
 These booleans are set to true in the communication task or the sensors task.
 
@@ -153,17 +151,26 @@ If a piece of data has been updated, a data packet is created with the data id, 
 This packet is then written to the SD write buffer.
 Once all updated messages are written to the SD write buffer, the buffer is then flushed to the SD card.
 This is done on each iteration as opposed to waiting for the buffer to fill up to reduce the blocking when writing to the disk to reduce the potential risk of missing data updates.
-This is outlined in INSERT FIGURE.
-If the writes and flush are completed sucessfully and logging is true, the next state is Wait to Write.
-If the writes an flush are completed suggessfully and logging is false, the next state is Close.
+This is outlined in \cref{fig:SDWrite}.
+If the writes and flush are completed successfully and logging is true, the next state is Wait to Write.
+If the writes an flush are completed successfully and logging is false, the next state is Close.
 If the writes or flush fail, the next state is Error.
 Once the writes are complete, the booleans that are true for a data segment are reset to false.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{SDWrite.png}
+	\caption{SD Task Write State Block Diagram}
+	\label{fig:SDWrite}
+\end{figure}
 
 \paragraph{}
 The final normal state is the Close state.
 This state is responsible for safely closing the current open file.
 If the file fails to close properly, the next state is the Error state.
+To do this, any data remaining in the buffer is flushed to the SD card and the File object is closed.
 If the file closes properly, the next state is the Wait to Open state.
+If the final flush fails or the file fails to close, the next state is set to the Error state.
 
 \subsection{Communication Task}
 
@@ -201,8 +208,8 @@ If there are any issues, the next state is set to Error.
 
 \paragraph{}
 The Wait for Message state is the state that is directly responsible for reading data off of the CAN bus.
-As is described in INSERT FIGURE, if the CAN bus has a message available to be read, it reads the contents into a message variable.
-If no messages are ever received, it is possible to become stuck in this state indefinately.
+If the CAN bus has a message available to be read, it reads the contents into a message variable.
+If no messages are ever received, it is possible to become stuck in this state indefinitely.
 If there is a message received, the next state is set to Process Message.
 If there are errors reading the message, the next state is set to Error.
 Only one message will be read in this state, so if there are multiple messages ready to be read, the system will need to enter this state multiple times.
@@ -212,11 +219,18 @@ The Process Message state is responsible for taking the data from a received CAN
 Additionally, in order to indicate to the storage task that a piece of data is new, an array of booleans that is equal in size to the number of data blocks exists.
 When a message is received, the boolean that corresponds to the same integer value as the index of the received data block is updated to true.
 This boolean will be reset to false in the storage task.
-As is detailed in INSERT FIGURE, this state first checks if the CAN ID of a message is valid, something expected or able to be handled.
+As is detailed in \cref{fig:CANProcess}, this state first checks if the CAN ID of a message is valid, something expected or able to be handled.
 It then copies the contents of the CAN message into the corresponding data segment in the shared data.
 Since it is expected that the CAN messages will fully correspond to the data segment and that the data segment will be byte aligned with no gaps, a simple memcpy operation can be done to move the data from the received message into the shared data.
 If this processing is completed without error, the next state is set back to Wait for Message.
 If there are any issues with the CAN message or the copying of the data, the next state is set to Error.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\linewidth]{CANProcess.png}
+	\caption{CAN Message Processing Block Diagram}
+	\label{fig:CANProcess}
+\end{figure}
 
 \paragraph{}
 The final state of the communication task is the Error state.
@@ -224,7 +238,7 @@ This state is responsible for handling any errors that occur as a result of init
 The most common errors that can occur are the bus failing to initialize properly and an invalid or unhandled CAN message IDs are received.
 The most likely cause of the CAN hardware not initializing properly are improper wiring on the PCB or invalid configuration options or settings.
 In either of these scenarios, recovery is not possible and the task must be held in the Error state.
-In the event of an invalid CAN ID received, the system can continue to operate sucessfully, and the task can be recovered by returning to the Wait for Message state.
+In the event of an invalid CAN ID received, the system can continue to operate successfully, and the task can be recovered by returning to the Wait for Message state.
 In the shared data, a flag is set high indicating a fault in the communication task.
 
 \subsection{Radio Communication Task}
@@ -232,7 +246,7 @@ In the shared data, a flag is set high indicating a fault in the communication t
 \paragraph{}
 The radio communication task handles the communication with the radio module and the transmission of from the vehicle to the pit area.
 The Xbee module handles the over-the-air transmission of data.
-The Xbee module is configured seperately, before being installed into the DAQ, accepting a UART communication line and relaying that data over the error.
+The Xbee module is configured separately, before being installed into the DAQ, accepting a UART communication line and relaying that data over the error.
 The module is not configured to handle lost packets, invalid packets, or any issues related to the data transmission as dropping packets is not a catastrophic failure.
 
 \paragraph{}
@@ -259,7 +273,7 @@ This is the only state that cannot enter the Error state.
 The Initialize state is responsible for configuring the UART communication interface with the Xbee radio.
 The Arduino HardwareSerial library handles configuring the registers to their alternate functions, so long as the proper tx and rx pins are set.
 The baud rate is configured to by 57600 to comply with the Xbee's configuration.
-If the UART initializes sucessfully, the next state is the Wait state.
+If the UART initializes successfully, the next state is the Wait state.
 If the UART communication is not initialized successfully, the next state is the Error state.
 
 \paragraph{}
@@ -285,7 +299,7 @@ If there are any issues with writing a byte, the next state is the Error state.
 
 \paragraph{}
 The last state in the radio communication task is the Error state.
-Similalry to the communication state, if there are any issues setting up the UART communication line, it is likely a result of faulty wiring or invalid paramaters.
+Similarly to the communication state, if there are any issues setting up the UART communication line, it is likely a result of faulty wiring or invalid parameters.
 In this event, the error is typically not recoverable.
 If the error occurs withing the Build or Send state, the error can be recovered.
 
@@ -293,7 +307,7 @@ If the error occurs withing the Build or Send state, the error can be recovered.
 \subsection{Sensors Task}
 
 \paragraph{}
-The sensors taks is responsible for reading the DAQ's onboard sensors.
+The sensors task is responsible for reading the DAQ's onboard sensors.
 These sensors include the onboard IMU and GPS, as well as a few analog sensor inputs.
 The IMU and GPS both communicate over I2C and the analog sensors utilize the internal ADC of the STM32.
 These sensor readings are then added to the shared data section so that they can be written to the SD card.
@@ -319,7 +333,7 @@ Differently from the radio communication task is that there will be two states t
 \end{figure}
 
 \paragraph{}
-The Initialize state is repsonsible for configuring the periphreals needed to communicate with sensors and for configuring any sensors when it is applicable.
+The Initialize state is responsible for configuring the peripherals needed to communicate with sensors and for configuring any sensors when it is applicable.
 Since both the IMU and GPS communicate over I2C, two I2C busses need to be configured.
 Additionally, each of these sensors need to be configured, including items such as setting up the sampling rate, any on board filtering, or changing the sensor range.
 For the basic analog sensors, the pins need to be configured to use their ADC alternate function.
@@ -333,7 +347,7 @@ If there are any issues, the next state is the Error state.
 The Wait state holds the task for a specified amount of time.
 The purpose of this is to ensure that sensors are sampled at fixed intervals for the purpose of adding filters.
 As a result, the amount of time the task is held in this state is determined by the desired sampling rate of the sensors that pre-processing filtering is done on.
-Since the only thing this state does is wait for a time condition to be met, it is impossile to fault and as such cannot enter the Error state.
+Since the only thing this state does is wait for a time condition to be met, it is impossible to fault and as such cannot enter the Error state.
 Once the time condition is met, the next state is the Read state.
 In the event that no pre-processing of the data is done, the time held in this state is 0 and the next state is immediately set to be the Read state.
 
@@ -358,7 +372,7 @@ Once the shared data section is updated and the flags indicating that the data i
 \paragraph{}
 The Error state handles any issues that arise from configuring the communication with sensors,the configuration of the sensors themselves, or sampling of the sensors.
 In the event that the communication interface fails to initialize properly, it is unlikely to be resolved.
-A flag is set in the shared data section to inidicate this.
+A flag is set in the shared data section to indicate this.
 However, if any of the communication interfaces initialize properly, the task as a whole is recoverable and receiving some of the data is better than receiving none of the data.
 The same is true of the sensors themselves.
 If any of the sensors fail to initialize, a flag is set in the shared data section to indicate this, but the task can continue without this sensor.
@@ -394,7 +408,7 @@ As a result, the next state is always set to be the Update state.
 The update state checks the status of the other tasks and toggles LEDs as needed.
 Additionally, the heartbeat is updated in this state.
 Similarly to the initialization state, since this state is only performing digital writes, or updating the output data register, it is not able to cause a fault.
-The heartbeat LED is toggled once every half second, for a total frequncy of 1 Hz.
+The heartbeat LED is toggled once every half second, for a total frequency of 1 Hz.
 The indicator LEDs directly use booleans from the shared data section to write a value to the LED.
 This means that the output of those LEDs is determined by the other tasks.
 The health monitoring task remains in the update state for the entire time the system is running.

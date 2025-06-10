@@ -2,21 +2,21 @@
 
 \paragraph{}
 The hardware design, with the exception of component selection, was largely outside the scope of this project and was completed by other members of the competition team.
-As the most senior member of the electronics team and the Electrical Technical Director, though, part of my responibilities to the project included design reviews and feedback on schematic design, layout, and routing.
+As the most senior member of the electronics team and the Electrical Technical Director, though, part of my responsibilities to the project included design reviews and feedback on schematic design, layout, and routing.
 
 \paragraph{}
 As with any embedded systems project, the code for the project does depend on the hardware design.
-Different periphreals of the microcontroller being used and sensors connected drive different parts of the firmware implementation.
-The specific periphreals that are heavily utilized are CAN FD, UART, I2C, SDIO, and ADC.
+Different peripherals of the microcontroller being used and sensors connected drive different parts of the firmware implementation.
+The specific peripherals that are heavily utilized are CAN FD, UART, I2C, SDIO, and ADC.
 
 \subsection{Component Selection}
 
 \paragraph{}
 The first major component selected was the STM32H750VBT6 that was discussed in the system design section.
-With this microcontroller, there was access to all the desired periphreals for all the necessary communication.
+With this microcontroller, there was access to all the desired peripherals for all the necessary communication.
 This microcontroller does come in a somewhat large package, being a QFP100 chip.
-The pins are all 3.3V tolerant, meaning that 5V analog sensors need to be lowered to have a range that does not exceed 3.3V and all digital IO of periphreals need to operate on 3.3V.
-There are more pins available than needed, leaving the potential for adding additional functionailty in future years as new features are desired.
+The pins are all 3.3V tolerant, meaning that 5V analog sensors need to be lowered to have a range that does not exceed 3.3V and all digital IO of peripherals need to operate on 3.3V.
+There are more pins available than needed, leaving the potential for adding additional functionality in future years as new features are desired.
 
 \paragraph{}
 To communicate with the CAN bus, a CAN FD transceiver is required.
@@ -29,14 +29,14 @@ This chip can support up to a 8 Mbps data rate and can be configured to use 3.3V
 Similarly, a USB-UART transceiver was selected to support a USB connection from a user to the DAQ.
 Just like the CAN transceiver, the digital IO that physically connects to the microcontroller must support a 3.3V voltage.
 The FT231XS-R chip from FTDI \cite{USBProductPage} was selected due to its popularity and large amount of documentation.
-Additioanlly, this chip includes an EEPROM that contains information about the device.
+Additionally, this chip includes an EEPROM that contains information about the device.
 This can be programmed to include identifying information about the device.
 
 \paragraph{}
 The GPS selected was the NEO-M9N-00B module from u-blox \cite{GPSProductPage}.
 This module was selected because it was utilized in a prior senior project and supports several different communication protocols.
 That senior project focused on creating an all-in-one solution for tracking vehicle orientation and heading using an IMU, GPS, and magnetometer.
-This also includeds code for interfacing with these sensors.
+This also included code for interfacing with these sensors.
 This senior project was also a useful reference for good practices for routing the RF signal from the GPS to the antenna.
 
 \paragraph{}
@@ -49,7 +49,7 @@ The LSM6DSLTR IMU from ST \cite{IMUProductPage} fit all of these criteria.
 \paragraph{}
 The final major component selected was the micro SD card reader.
 A push-in/push-out reader was desired as it helps apply mechanical retention to the SD card.
-The vibrational load on the system during operation is non-neglible, so it is important to mechnaically retain the SD card to improve the overal reliability of the system.
+The vibrational load on the system during operation is non-negligible, so it is important to mechanically retain the SD card to improve the overall reliability of the system.
 The 2201778-1 micro SD card reader from TE Connectivity \cite{SDReaderProductPage} was selected due to TE Connectivity's high amount of reliability and meeting all the other needs of the component.
 
 \subsection{Schematic Design}
@@ -72,8 +72,8 @@ These issues were eventually resolved with a second revision of the board.
 \end{figure}
 
 \paragraph{}
-The next major aspect of the schamtic design was to ensure that all directional communication signals were connected to the apprioate pins between the microcontroller and the periphreals.
-Specifically, it was important to ensure that for both UART connections, the TX pin of the microcontroller was connected to the RX pin of the apprioate component.
+The next major aspect of the schamtic design was to ensure that all directional communication signals were connected to the appropriate pins between the microcontroller and the peripherals.
+Specifically, it was important to ensure that for both UART connections, the TX pin of the microcontroller was connected to the RX pin of the appropriate component.
 On the CAN controller to CAN transceiver connection, though, the opposite needs to occur.
 The CAN TX pin on the microcontroller for the CAN controller must be connected to the CAN TX pin of the CAN transceiver and vice versa for RX.
 This can be seen in \cref{fig:USBSchematic}, \cref{fig:CANSchematic}, and \cref{fig:STMIOC}.
@@ -94,9 +94,9 @@ This can be seen in \cref{fig:USBSchematic}, \cref{fig:CANSchematic}, and \cref{
 \end{figure}
 
 \paragraph{}
-It is also important that pull-up and pull-down resistors are connected to the apprioate signals for communication lines and control signals.
+It is also important that pull-up and pull-down resistors are connected to the appropriate signals for communication lines and control signals.
 Specifically, pull up resistors needed to be added for the I2C communication lines as well as the SDIO data lines.
-Additionally, the DAQ acts as a termniating node in the CAN netowrk, so the termination resistor for the CAN bus must be present.
+Additionally, the DAQ acts as a terminating node in the CAN network, so the termination resistor for the CAN bus must be present.
 
 \begin{figure}[H]
 	\centering
@@ -108,13 +108,13 @@ Additionally, the DAQ acts as a termniating node in the CAN netowrk, so the term
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\linewidth]{SDIO.png}
-	\caption{Mico SD Reader Wiring}
+	\caption{Micro SD Reader Wiring}
 	\label{fig:SDSchematic}
 \end{figure}
 
 \paragraph{}
 The final important aspect for this at a system level was to ensure that the controlled impedances of signals were configured if they were needed.
-Speifically, the the CAN spec and USB spec detail controlled differential impedances for their signals.
+Specifically, the the CAN spec and USB spec detail controlled differential impedances for their signals.
 As a result, these signals needed to be marked as differential pairs on the schematics as seen in \cref{fig:USBSchematic} and \cref{fig:CANSchematic}.
 
 \subsection{Layout and Routing}
@@ -156,8 +156,8 @@ As can be seen in \cref{fig:USBImpedance}, the impedance of the differential pai
 \end{figure}
 
 \paragraph{}
-The largest design choice for the layout was to split the hardware into two seperate PCBs that could be stacked on top of each other.
-The purpose of this was to reduce the overall footprint of the design by utlizing the third dimension.
+The largest design choice for the layout was to split the hardware into two separate PCBs that could be stacked on top of each other.
+The purpose of this was to reduce the overall footprint of the design by utilizing the third dimension.
 Due to connector sizes and some large components, the area of a single PCB would have needed to increase fairly significantly, approximately $1750\text{mm}^2$.  By utilizing the third dimension, the total package size was able to decrease by a similar amount.
 This is critical for physically mounting the device onto the car, as there is a limited amount of space and few mounting points available.
 The way these PCBs attach together can be seen in \cref{fig:PCBAssembly}.

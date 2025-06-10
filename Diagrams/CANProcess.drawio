@@ -1,0 +1,82 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36" version="27.1.4">
+  <diagram name="Page-1" id="xor9hqDSgLxYbkR8_ywZ">
+    <mxGraphModel dx="1181" dy="630" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="4meRWwbWGRi3nMpIs1-b-15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=8;" edge="1" parent="1" source="4meRWwbWGRi3nMpIs1-b-1" target="4meRWwbWGRi3nMpIs1-b-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4meRWwbWGRi3nMpIs1-b-1" value="Check ID" style="rounded=1;whiteSpace=wrap;html=1;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="140" y="120" width="70" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4meRWwbWGRi3nMpIs1-b-12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=8;" edge="1" parent="1" source="4meRWwbWGRi3nMpIs1-b-2" target="4meRWwbWGRi3nMpIs1-b-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4meRWwbWGRi3nMpIs1-b-2" value="Set new data flag high (SD)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="510" y="120" width="70" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4meRWwbWGRi3nMpIs1-b-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=8;" edge="1" parent="1" source="4meRWwbWGRi3nMpIs1-b-3" target="4meRWwbWGRi3nMpIs1-b-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4meRWwbWGRi3nMpIs1-b-3" value="Copy data into shared data segment" style="rounded=1;whiteSpace=wrap;html=1;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="330" y="120" width="70" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4meRWwbWGRi3nMpIs1-b-14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=8;" edge="1" parent="1" source="4meRWwbWGRi3nMpIs1-b-4" target="4meRWwbWGRi3nMpIs1-b-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4meRWwbWGRi3nMpIs1-b-18" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=8;" vertex="1" connectable="0" parent="4meRWwbWGRi3nMpIs1-b-14">
+          <mxGeometry x="-0.1024" y="-1" relative="1" as="geometry">
+            <mxPoint y="-1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4meRWwbWGRi3nMpIs1-b-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=8;" edge="1" parent="1" source="4meRWwbWGRi3nMpIs1-b-4" target="4meRWwbWGRi3nMpIs1-b-7">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="260" y="240" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4meRWwbWGRi3nMpIs1-b-17" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=8;" vertex="1" connectable="0" parent="4meRWwbWGRi3nMpIs1-b-16">
+          <mxGeometry x="-0.1945" y="-1" relative="1" as="geometry">
+            <mxPoint x="4" y="-1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4meRWwbWGRi3nMpIs1-b-4" value="if ID is&lt;div&gt;handled&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="230" y="120" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4meRWwbWGRi3nMpIs1-b-13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=8;" edge="1" parent="1" source="4meRWwbWGRi3nMpIs1-b-5" target="4meRWwbWGRi3nMpIs1-b-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4meRWwbWGRi3nMpIs1-b-5" value="Set new data flag high (Radio)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="600" y="120" width="70" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4meRWwbWGRi3nMpIs1-b-10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=8;" edge="1" parent="1" source="4meRWwbWGRi3nMpIs1-b-6" target="4meRWwbWGRi3nMpIs1-b-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4meRWwbWGRi3nMpIs1-b-19" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=8;" vertex="1" connectable="0" parent="4meRWwbWGRi3nMpIs1-b-10">
+          <mxGeometry x="-0.4762" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4meRWwbWGRi3nMpIs1-b-11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=8;" edge="1" parent="1" source="4meRWwbWGRi3nMpIs1-b-6" target="4meRWwbWGRi3nMpIs1-b-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4meRWwbWGRi3nMpIs1-b-20" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=8;" vertex="1" connectable="0" parent="4meRWwbWGRi3nMpIs1-b-11">
+          <mxGeometry x="0.5653" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4meRWwbWGRi3nMpIs1-b-6" value="If copied successfully" style="rhombus;whiteSpace=wrap;html=1;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="420" y="120" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4meRWwbWGRi3nMpIs1-b-7" value="Wait for message" style="rounded=1;whiteSpace=wrap;html=1;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="600" y="210" width="70" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4meRWwbWGRi3nMpIs1-b-8" value="Error" style="rounded=1;whiteSpace=wrap;html=1;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="415" y="40" width="70" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
