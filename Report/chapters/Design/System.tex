@@ -84,3 +84,10 @@ The XBee 3 Pro was selected due to its wide community support and ease of integr
 	\caption{System Level Block Diagram}
 	\label{fig:SysDiagram}
 \end{figure}
+
+\paragraph{}
+The last major design choice was to utilize the Arduino framework for writing the firmware for the DAQ.
+This was chosen to reduce the time required to write and test firmware for interfacing with the hardware.
+Specifically, configuring the peripherals for CAN and SDIO are complex and would have taken away from the software at a higher level, and integrating all the different features together.
+To use the Arduino framework, the PlatformIO \cite{PlatformIOSite} extension from VSCode was used to setup the project.
+STM32 microcontrollers utilize STM32Duino \cite{STM32DuinoGithub} as the source code for the Arduino integration.

@@ -148,6 +148,15 @@ These booleans are set to true in the communication task or the sensors task.
 The Write state is responsible for writing the most recent data to the SD card.
 Once the task enters this state, it iterates through all possible pieces of data to see if they have been updated.
 If a piece of data has been updated, a data packet is created with the data ID, the data, and then a checksum to improve resiliency.
+\begin{verbatim}
+uint32_t calcChecksum(uint8_t *payload, uint16_t payloadSize) {
+    uint32_t checksum = 0;
+    for (int8_t i = 0; i < payloadSize; i++) {
+        checksum += (i + 1) * payload[i];
+    }
+    return checksum;
+}
+\end{verbatim}
 This packet is then written to the SD write buffer.
 Once all updated messages are written to the SD write buffer, the buffer is then flushed to the SD card.
 This is done on each iteration as opposed to waiting for the buffer to fill up to reduce the blocking when writing to the disk, to reduce the potential risk of missing data updates.
