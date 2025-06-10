@@ -1,24 +1,24 @@
 \section{FutureWorks}
 
 \paragraph{}
-To improve upon this project for future years, there are some design choices that could be changed and additional features that could be implemented.
+To improve this project for future years, some design choices could be changed and additional features that could be implemented.
 The biggest missing feature is the ability to download files and interact with the device over a USB interface.
 The hardware supports this, but due to timeline constraints and other difficulties faced throughout the project, this feature did not get implemented in time.
-The purpose of being able to download files is to reduce the need to open up the system to remove the SD card.
+The purpose of being able to download files is to reduce the need to open the system to remove the SD card.
 For a similar reason, being able to interact over a USB interface would allow for files to be cleared.
 
 \paragraph{}
 The next change that I would make would be to utilize an EEPROM to store the information about what data is being collected, different modes, and different features.
-Since everything is part of the compiled binary flashed to the microcontroller, if anything changes, such as adding new data IDs or an analog sensor behavior changes, the code must be re-flashed to the microcontroller.
-If this information could be read from or written to an EEPROM at runtime, the need to re-flash the DAQ would decrease very significantly, improving reliability and decreasing the need to open up the hardware even further.
-This would go hand-in-hand with needed a USB interface available to tell the system to update the EEPROM with new values and would likely also need to have some validation implemented, such as computing a checksum from the new data in the EEPROM and comparing it to a pre-computed checksum.
+Since everything is part of the compiled binary flashed to the microcontroller, if anything changes, such as adding new data IDs or an analog sensor behavior change, the code must be re-flashed to the microcontroller.
+If this information could be read from or written to an EEPROM at runtime, the need to re-flash the DAQ would decrease very significantly, improving reliability and decreasing the need to open the hardware even further.
+This would go together with needing a USB interface available to tell the system to update the EEPROM with new values, and would likely also need to have some validation implemented, such as computing a checksum from the new data in the EEPROM and comparing it to a pre-computed checksum.
 
 \paragraph{}
 A third piece of work for the future would be to investigate different radio options or different configurations for the XBee radio for transmitting data.
 As discussed in the testing section, the wireless communication did work, but the frequency with which packets were being dropped was very high.
-There are legal issues and rules concerns with communicating on frequencies not in the 900 MHz, 2.4 GHz, or 5 GHz bands, so using there is not much wiggle room in terms of the frequency, but the transmit power could potentially be increased, or a directional antenna that moves to point towards the pits could be investigated as well.
+There are legal issues and rules concerning communicating on frequencies not in the 900 MHz, 2.4 GHz, or 5 GHz bands, so using there is not much wiggle room in terms of the frequency, but the transmit power could potentially be increased, or a directional antenna that moves to point towards the pits could be investigated as well.
 
 \paragraph{}
-The last thing that should be done for the future would be to increase the number of sensors nodes that are able to communicate with the DAQ.
-Creating generic analog sensor nodes, thermocouple nodes, a TPMS node, or other sensing nodes that can exist as standalone units that just need to connect to the CAN bus can be done with the only change on the DAQ's end is to update the information about data being stored to include these sensors.
-This was not within the scope of this project as adding sensor nodes ws not feasible with the timeline constraints, but with a functioning DAQ unit, these nodes would be useful moving forward.
+The last thing that should be done for the future would be to increase the number of sensor nodes that can communicate with the DAQ.
+Creating generic analog sensor nodes, thermocouple nodes, a TPMS node, or other sensing nodes that can exist as standalone units that just need to connect to the CAN bus can be done with the only change on the DAQ's end being to update the information about data being stored to include these sensors.
+This was not within the scope of this project as adding sensor nodes was not feasible with the timeline constraints, but with a functioning DAQ unit, these nodes would be useful moving forward.

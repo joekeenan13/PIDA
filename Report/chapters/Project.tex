@@ -15,35 +15,35 @@ These requirements come from a combination of the existing systems on the car, d
 The customer requirements are as follows:
 \begin{itemize}
 	\item A data storage rate of at least 400 Hz
-	\item Enough storage to be able to store at least 5 hours worth of data
+	\item Enough storage to be able to store at least 5 hours' worth of data
 	\item The ability to download files
-	\item A long range wireless radio to monitor data periodically
-	\item The ability to add or remove different sensor or data modules
+	\item A long-range wireless radio to monitor data periodically
+	\item The ability to add or remove different sensors or data modules
 	\item An IMU and GPS to monitor vehicle dynamics
 	\item The ability to directly wire some sensors to the DAQ unit
 	\item The data must be in a format that can be easily viewed
-	\item Low enough power draw to not impact the battery life of the vehicle
+	\item Low enough power to not impact the battery life of the vehicle
 \end{itemize}
 
 \paragraph{}
-The storage rate comes from the controls loop rate of the fasted controller on the vehicle.
+The storage rate comes from the control loop rate of the fastest controller on the vehicle.
 Since there are no current plans to increase the controller frequencies or add any sensors that require a faster sampling rate, this can be the minimum achievable collection rate for a while.
-The endurance event at a baja event lasts for four hours.
-Accommodating for time spent waiting for race to start and any final checks just before the event, five hours should accommodate a full endurance days worth of data.
-In order to quickly diagnose issues on the vehicle, knowing what is happening before the car arrives back in the pits is useful.
+The endurance event at a Baja event lasts for four hours.
+Accommodating for time spent waiting for th race to start and any final checks just before the event, five hours should accommodate a full endurance days' worth of data.
+To quickly diagnose issues on the vehicle, knowing what is happening before the car arrives back in the pits is useful.
 Downloading files directly off the DAQ has been an issue for several years and significantly delays the processing of data.
-Additionally, it often was the case that the user would forget to add the storage device back onto the system, and no data would be collected until the system was reopened to analyze data again.
+Additionally, it was often the case that the user would forget to add the storage device back onto the system, and no data would be collected until the system was reopened to analyze data again.
 The ability for the system to be modular and add other sensors is also important.
 It is often the case that there is a sensor that is wanted for a single test but would not want to be left on the vehicle permanently.
 For a similar reason, being able to directly wire a sensor to the DAQ is useful.
-Having an onboard GPS and IMU are critical sensors for monitoring vehicle dynamics and they are always wanted.
-Finally, since the majority of the team are mechanical engineers, it is important that all data is easily accessible and that everyone is able to view the data.
+Having an onboard GPS and IMU are critical sensors for monitoring vehicle dynamics, and they are always wanted.
+Finally, since most of the team are mechanical engineers, it is important that all data is easily accessible and that everyone can view the data.
 
 \section{Engineering Requirements}
 
 \paragraph{}
 From the customer requirements, engineering requirements can be derived.
-These requirements reflect the technical specifications that the rest of the system will be designed to.
+These requirements reflect the technical specifications that the rest of the system will be designed for.
 
 \begin{table}[H] \label{tab:EngineeringRequirements}
 \centering
@@ -73,7 +73,7 @@ The rest of the customer requirements come down to design choices and less down 
 \section{Use Cases}
 
 \paragraph{}
-There are three main use cases for this system:
+There are three main cases of use for this system:
 \begin{itemize}
 	\item[(1)] To collect vehicle and subsystem data to validate design models
 	\item[(2)] To monitor vehicle health during drives at testing and competition
@@ -81,19 +81,19 @@ There are three main use cases for this system:
 \end{itemize}
 
 \paragraph{}
-In the first case, an engineer is attempting to validate a braking model for the car.
-The model is a 9 degree of freedom model and uses brake pressure, shock heights, vehicle acceleration, and other parameters to determine when the wheels will "lock", or break traction.
-In order to validate the model for our design for information for the next design cycle as well as the design event part of competition, these sensor's data is needed.
+In the first case, an engineer is attempting to validate a brakes model for the car.
+The model is a 9 degree of freedom model and uses brake pressure, shock heights, vehicle acceleration, and other parameters to determine when the wheels will "lock" or break traction.
+To validate the model for our design for information for the next design cycle as well as the design event, these sensors' data is needed.
 This is the case for several different vehicle dynamics models used to design the baja car.
 
 \paragraph{}
 In the second case, the car is driving in the endurance event of a competition.
 During an endurance event, the car will be driving continuously for several hours without the ability to regularly inspect parts or systems for failure.
-To maintain an understanding of the vehicles health and critical systems during this event, we can view wirelessly transmitted data.
-This helps the pit crew know if or when to expect the vehicle coming back to the pits for a repair.
+To maintain an understanding of the vehicle's health and critical systems during this event, we can view wirelessly transmitted data.
+This helps the pit crew know if or when to expect the vehicle is coming back to the pits for a repair.
 
 \paragraph{}
 In the third case, we are at testing or at competition, and something breaks or starts performing worse unexpectedly.
 To properly diagnose the root cause of an issue, knowing what was happening immediately preceding a failure can be useful or even critical.
-In many instances, the car or the component may not have been visible to the tester and the driver may not be able to diagnose the issue on their own.
-In this case, having access to sensor data that can be used to extrapolate what the vehicle was doing prior to a failure can help an engineer fix or improve upon their design to reduce risk of failure in the future.
+In many instances, the car or the component may not have been visible to the tester, and the driver may not be able to diagnose the issue on their own.
+In this case, having access to sensor data that can be used to extrapolate what the vehicle was doing prior to failure can help an engineer fix or improve upon their design to reduce the risk of failure in the future.

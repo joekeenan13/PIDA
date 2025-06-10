@@ -1,9 +1,9 @@
 \section{AEM}
 
 \paragraph{}
-AEM \cite{AEMSite} designs data loggers and dashboards for testing purposed for cars and other vehicles.
+AEM \cite{AEMSite} designs data loggers and dashboards for testing purposes for cars and other vehicles.
 These data loggers connect to their different modules that connect to various can sensors and breakouts for different types of sensors.
-Some of these modules also come with an inertial measurement units (IMU) and global positioning system (GPS) which are useful for understanding the entire vehicle state.
+Some of these modules also come with an inertial measurement unit (IMU) and a global positioning system (GPS) which are useful for understanding the entire vehicle state.
 
 \subsection{AEM Loggers}
 
@@ -29,10 +29,10 @@ These files can also be visualized on the dashboard as well to give a quick glim
 \subsection{AEM Add-Ons}
 
 \paragraph{}
-In order to connect more sensors or instrumentation to the AEM loggers, additional add-ons must be purchased and configured.
+To connect more sensors or instrumentation to the AEM loggers, additional add-ons must be purchased and configured.
 Some of these add-ons include a CAN module which allows the AEM logger to connect to and interface with a CAN bus and a thermocouple unit shown in \cref{fig:AEM_THERMO} for measuring temperature.
 These expansion units, before the cost of any sensors, are several hundred dollars on their own.
-In order to hook up any sensors, at least one of these expansion units must be purchased.
+To hook up any sensors, at least one of these expansion units must be purchased.
 
 \begin{figure}[H]
 	\centering
@@ -49,15 +49,15 @@ The AEM loggers can also interface with traditional analog or digital sensors so
 
 \paragraph{}
 In addition to wired sensors, AEM is also compatible with some wireless sensors for things such as tire pressure monitoring systems (TPMS) or fuel sensors.
-In order to communicate with these wireless sensors, a wireless module in needed or a logger with wireless capabilities is needed.
-AEM utilizes a proprietary system call X-Wifi to connect to these wireless sensors that is already a part of their CD5 and CD7 loggers.
+To communicate with these wireless sensors, a wireless module is needed or a logger with wireless capabilities is needed.
+AEM utilizes a proprietary system called X-Wifi to connect to these wireless sensors, that are already a part of their CD5 and CD7 loggers.
 AEM's sensors that can utilize the X-Wifi capabilities of the logger are priced Similarly to their more traditional wired sensors.
 
 \subsection{DBC Files}
 
 \paragraph{}
-In addition to AEM specific sensors, the AEM data loggers can interface with any custom hardware that is outputting it's data over CAN.
-In order to configure the AEM to read data from a CAN bus, including its own CAN capable sensors, a configuration file must be made to tell the logger which value corresponds to which bytes of a specific CAN frame.
-A CAN Database file (.dbc) is a standardized file format for configuring which is able to describe what information is contained within a CAN frame.
+In addition to AEM specific sensors, the AEM data loggers can interface with any custom hardware that is outputting its data over CAN.
+To configure the AEM to read data from a CAN bus, including its own CAN-capable sensors, a configuration file must be made to tell the logger which value corresponds to which bytes of a specific CAN frame.
+A CAN Database file (.dbc) is a standardized file format for configuring which can describe what information is contained within a CAN frame.
 An example .dbc file can be seen in \cref{lst:ex_dbc} in the appendix.
 AEM utilizes this file format for its data loggers to interface with a CAN network so long as the proper hardware add-ons are purchased.
