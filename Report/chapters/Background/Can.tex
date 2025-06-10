@@ -1,7 +1,7 @@
 \section{CAN}
 
 \paragraph{}
-Controller Area Network (CAN) busses are commonly used in automotive applications to connect different control or instrumentation nodes together developed by Bosch in the 1990s.
+Controller Area Network (CAN)\cite{wikipediaCAN} busses are commonly used in automotive applications to connect different control or instrumentation nodes together developed by Bosch in the 1990s.
 This allows for any node to communicate with any other node on the bus.
 CAN utilizes a two wire asynchronous differential twisted pair signal to transmit across the bus.
 The asynchronous nature of this protocol reduces the number of wires required to transmit data.
@@ -19,9 +19,9 @@ Additionally, there are control bits, cyclical redundancy (CRC) bits, and end of
 \subsection{CAN 2.0}
 
 \paragraph{}
-CAN 2.0 is the most commonly used CAN protocol in the automotive.
+CAN 2.0\cite{BOSCH_CAN20} is the most commonly used CAN protocol in the automotive.
 This version of CAN uses an 11 bit identification or address section with maximum of 8 bytes of data transmitted.
-The bitrate for this version of CAN can be up to 1 Mega bit per second (Mbps) \cite{BOSCH_CAN20}.
+The bitrate for this version of CAN can be up to 1 Mega bit per second (Mbps).
 With an assumption of 1 byte of data transmission, the overhead can be computed as $\frac{48 \text{bits}}{56 \text{bits}}$.  With the assumption of 8 bytes of data transmission, the overhead can be computed as $\frac{48 \text{bits}}{112 \text{bits}}$.
 The more data that is transmitted per frame, the less overhead impacts the total data throughput.
 An example data frame of CAN 2.0 can be seen in \cref{fig:CANDataFrame}.
@@ -36,12 +36,12 @@ An example data frame of CAN 2.0 can be seen in \cref{fig:CANDataFrame}.
 \subsection{CAN FD}
 
 \paragraph{}
-In 2012, Bosch released a new version of CAN with a flexible data rate called CAN FD.
+In 2012, Bosch released a new version of CAN with a flexible data rate called CAN FD\cite{BOSCH_CANFD}.
 This new version of CAN has several improvements including faster data rates and allowing for more data to be transmitted in each frame.
 The flexible data rate comes from CAN FD's ability to increase the data rate during the data section of the transmission.
-The protocol supports up to 8 Mbps of throughput during the data section of transmission and up to 1 Mbps of throughput during the beginning and ending parts of the frame \cite{BOSCH_CANFD}.
+The protocol supports up to 8 Mbps of throughput during the data section of transmission and up to 1 Mbps of throughput during the beginning and ending parts of the frame.
 This allows for significantly more data throughput overall.
-In addition to the flexible data rate used by CAN FD, the maximum size of the data section was increased from 8 bytes to 64 bytes \cite{BOSCH_CANFD}.
+In addition to the flexible data rate used by CAN FD, the maximum size of the data section was increased from 8 bytes to 64 bytes.
 This decreases total overhead significantly making the transmission more efficient.
 These two new characteristics combined provide for a much more efficient transfer of data, particularly when transmitting high amounts of data very frequently.
 
