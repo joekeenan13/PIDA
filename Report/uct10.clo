@@ -190,13 +190,13 @@
 %  *           PARAGRAPHING               *
 %  ****************************************
 %
-\parskip 0pt plus 1pt              % Extra vertical space between
+% \parskip 0pt plus 1pt              % Extra vertical space between
                                    % paragraphs.
 \parindent 4em                     % Width of paragraph indentation.
 %\topsep 8pt plus 2pt minus 4pt    % Extra vertical space, in addition
                                    % to \parskip, added above and below
                                    % list and paragraphing environments.
-\partopsep 2pt plus 1pt minus 1pt  % Extra vertical space, in addition
+% \partopsep 2pt plus 1pt minus 1pt  % Extra vertical space, in addition
                                    % to \parskip and \topsep, added when
                                    % user leaves blank line before
                                    % environment.
@@ -247,7 +247,7 @@
     \Huge \bfseries                 % Title.
     #1\par
     \nobreak                        % TeX penalty to prevent page break.
-    \vskip 40\p@                    % Space between title and text.
+    \vskip 20\p@                    % Space between title and text.
   }}
 
 % \@makeschapterhead {TEXT} : Makes the heading for the \chapter*
@@ -342,7 +342,7 @@
 \def\subsubsection{\@startsection{subsubsection}{3}{\z@}{-3.25ex plus
     -1ex minus-.2ex}{1.5ex plus.2ex}{\reset@font\normalsize\bfseries}}
 \def\paragraph{\@startsection
-    {paragraph}{4}{\z@}{3.25ex plus1ex minus.2ex}{-1em}{\reset@font
+    {paragraph}{4}{\z@}{0ex plus1ex minus.2ex}{-1em}{\reset@font
     \normalsize\bfseries}}
 \def\subparagraph{\@startsection
      {subparagraph}{4}{\parindent}{3.25ex plus1ex minus
