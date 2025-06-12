@@ -1,0 +1,18 @@
+\section{Conclusion}
+
+\paragraph{}
+When comparing CAN and CAN FD, CAN FD is superior in almost every way.
+The main drawback to using CAN FD is that many sensors that can be purchased that are designed to integrate with CAN data loggers is that they use CAN 2.0, not CAN FD.
+A CAN FD node should be able to read a CAN 2.0 frame if the data bitrates are the same.
+This is often not the case, however, as one of the major benefits of CAN FD is the higher data bitrates, this is often not the case.
+
+\paragraph{}
+The biggest issues that will come up with any of the OEM loggers is the throughput of data on the CAN bus.
+All three of the OEM loggers use CAN 2.0, limiting the frame data section to 8 bytes and the data bitrate to 1 Mbps.
+Additionally, none of the OEM solutions investigated included onboard sensors for vehicle dynamics.
+They all support add-ons for an IMU and GPS, but it is an additional cost on an already expensive investment.
+On a similar vein, expanding the OEM loggers to support more sensors is expensive.
+
+\paragraph{}
+Since CAN FD is preferred and the cost of the OEM loggers and their add-ons are very high, a custom solution is the desired approach.
+With a custom DAQ, onboard sensors can be added and long-range wireless functionality that would not exist in an OEM logger without add-ons can also be added.

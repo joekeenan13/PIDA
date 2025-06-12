@@ -31,7 +31,7 @@ The XLog includes all of this and an onboard IMU and GPS, making it easier to mo
 \subsection{AiM Add-Ons}
 
 \paragraph{}
-To communicate with sensors or other pieces of information, there are a few required accessories needed.
+To communicate with sensors, there are a few required accessories needed.
 These are a data hub that can be used to communicate with different accessories and a channel expansion to provide more ports for connecting different sensors to the CAN network.
 The channel expansion ports provide power and ground signals, as well as an analog sensor input for reading the sensor data.
 The data hub just acts as a way to reduce the number of devices directly connected to the logger itself.
@@ -40,7 +40,7 @@ On Summit's website, the data hub is \$77, and the channel expansions are \$288,
 
 \paragraph{}
 Besides these essential add-ons, there are some other useful add-ons.
-AiM makes a GPS add-on shown in \cref{fig:AIM_GPS} that can be added provide real location data as well as a thermocouple hub that can be used similarly to the thermocouple add-on that AEM makes.
+AiM makes a GPS add-on shown in \cref{fig:AIM_GPS} that can provide location data, as well as a thermocouple hub that can be used similarly to the thermocouple add-on that AEM makes.
 They also make a storage expansion option, to increase the total amount of data that can be stored on board.
 None of these add-ons are required to utilize the system and to log data, but they are useful tools that improve the system and provide some useful functionality.
 
@@ -54,12 +54,12 @@ None of these add-ons are required to utilize the system and to log data, but th
 \paragraph{}
 In addition to the hardware accessories to improve the experience and connectivity of AiM data loggers, AiM also sells different kinds of sensors for automotive applications.
 These include temperature sensors, pressure sensors, combined temperature and pressure sensors, position sensors, speed sensors, and rpm sensors.
-Most of these sensors are analog voltage outputs, meaning that to communicate with the data logger, these sensors must be connected to the logger directly or to a unit that can transmit the data over CAN or other supported communication protocols.
+Most of these sensors have analog voltage outputs, meaning that to communicate with the data logger, these sensors must be connected to the logger directly or to a unit that can transmit the data over CAN or other supported communication protocols.
 These sensors, like the other add-ons and loggers, cannot be purchased directly from AiM and must be purchased from a third-party retailer.
 The pricing on sensors is similar to the pricing of similar sensors sold by AEM.
 
 \paragraph{}
-AiM utilizes a tool that they call CAN builder to set up the logger to properly handle and process CAN inputs.
+AiM utilizes a tool called CAN builder to set up the logger to properly handle and process CAN inputs.
 This tool is essentially a graphical interface for configuring the logger to properly read CAN messages.
 CAN builder is capable of interfacing with AiM's proprietary XC1 file types, the standard DBC file types, or building a custom driver for reading CAN messages.
 The CAN builder tool can only be used on AiM devices that are supported by their Race Studio 3 software.

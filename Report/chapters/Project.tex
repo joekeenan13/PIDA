@@ -2,14 +2,14 @@
 
 \paragraph{}
 The aim of this project is to make a fully functional and simple to use data acquisition system for the Cal Poly Racing Baja SAE team for monitoring controls information and logging sensor data on the CPx25 vehicle and for use in future vehicles.
-This will include the hardware unit, the software and firmware required to run the system, and tools for interfacing with the system.
+This includes the hardware unit, the software and firmware required to run the system, and tools for interfacing with the system.
 
 \section{Customer Requirements}
 
 \paragraph{}
 The customer for this project is the Cal Poly Racing Baja Team.
-As the Electrical Technical Director of this team for this year, I can also be considered the customer for this product and as such am responsible for defining the customer requirements for this project.
-These requirements come from a combination of the existing systems on the car, desired data that is wanted to be collected, the ability to expand the desired sensors, the programming and data collection experience of the team, and reusability.
+As the Electrical Technical Director of this team for this year, I can also be considered the customer for this product and am responsible for defining the customer requirements.
+These requirements come from a combination of the existing systems on the car, desired data, the ability to expand the desired sensors, the programming and data collection experience of the team, and reusability.
 
 \paragraph{}
 The customer requirements are as follows:
@@ -22,22 +22,23 @@ The customer requirements are as follows:
 	\item An IMU and GPS to monitor vehicle dynamics
 	\item The ability to directly wire some sensors to the DAQ unit
 	\item The data must be in a format that can be easily viewed
-	\item Low enough power to not impact the battery life of the vehicle
+	\item Less than 7.5W
 \end{itemize}
 
 \paragraph{}
 The storage rate comes from the control loop rate of the fastest controller on the vehicle.
-Since there are no current plans to increase the controller frequencies or add any sensors that require a faster sampling rate, this can be the minimum achievable collection rate for a while.
+Since there are no current plans to increase the controller frequencies or add any sensors that require a faster sampling rate, this is the minimum required collection rate.
 The endurance event at a Baja event lasts for four hours.
-Accommodating for time spent waiting for th race to start and any final checks just before the event, five hours should accommodate a full endurance days' worth of data.
+Adjusting for time spent waiting for the race to start and any final checks just before the event, five hours should accommodate a full endurance days' worth of data.
 To quickly diagnose issues on the vehicle, knowing what is happening before the car arrives back in the pits is useful.
 Downloading files directly off the DAQ has been an issue for several years and significantly delays the processing of data.
-Additionally, it was often the case that the user would forget to add the storage device back onto the system, and no data would be collected until the system was reopened to analyze data again.
+Additionally, it was often the case that the pit crew would forget to add the storage device back onto the system, and no data would be collected until the system was reopened to analyze data again.
+Being able to download a file over USB or another interface would remove the need to take the SD card out of the system.
 The ability for the system to be modular and add other sensors is also important.
-It is often the case that there is a sensor that is wanted for a single test but would not want to be left on the vehicle permanently.
+It is often the case that there is a sensor that is wanted for a single test but should not be left on the vehicle permanently.
 For a similar reason, being able to directly wire a sensor to the DAQ is useful.
-Having an onboard GPS and IMU are critical sensors for monitoring vehicle dynamics, and they are always wanted.
-Finally, since most of the team are mechanical engineers, it is important that all data is easily accessible and that everyone can view the data.
+Having an onboard GPS and IMU are critical sensors for monitoring vehicle dynamics.
+Finally, since most of the team do not have experience working with custom electronics, it is important that all data is easily accessible and shareable.
 
 \section{Engineering Requirements}
 
@@ -75,25 +76,35 @@ The rest of the customer requirements come down to design choices and less down 
 \paragraph{}
 There are three main cases of use for this system:
 \begin{itemize}
-	\item[(1)] To collect vehicle and subsystem data to validate design models
+	\item[(1)] To validate design models
 	\item[(2)] To monitor vehicle health during drives at testing and competition
 	\item[(3)] To diagnose unexpected failures of a system
 \end{itemize}
 
 \paragraph{}
-In the first case, an engineer is attempting to validate a brakes model for the car.
-The model is a 9 degree of freedom model and uses brake pressure, shock heights, vehicle acceleration, and other parameters to determine when the wheels will "lock" or break traction.
-To validate the model for our design for information for the next design cycle as well as the design event, these sensors' data is needed.
+An example of the first case would be an engineer is attempting to validate a brakes model for the car.
+The model has 9 degrees of freedom model using brake pressure, shock heights, vehicle acceleration, and other parameters to determine when the wheels will "lock" or break traction.
+To validate the model for our design, these sensors' data is needed.
 This is the case for several different vehicle dynamics models used to design the baja car.
 
 \paragraph{}
-In the second case, the car is driving in the endurance event of a competition.
+An example of the second case would be when the car is driving in the endurance event of a competition.
 During an endurance event, the car will be driving continuously for several hours without the ability to regularly inspect parts or systems for failure.
 To maintain an understanding of the vehicle's health and critical systems during this event, we can view wirelessly transmitted data.
 This helps the pit crew know if or when to expect the vehicle is coming back to the pits for a repair.
 
 \paragraph{}
-In the third case, we are at testing or at competition, and something breaks or starts performing worse unexpectedly.
+An example of the third case would be we are at testing or at competition, and something breaks or starts performing poorly.
 To properly diagnose the root cause of an issue, knowing what was happening immediately preceding a failure can be useful or even critical.
 In many instances, the car or the component may not have been visible to the tester, and the driver may not be able to diagnose the issue on their own.
 In this case, having access to sensor data that can be used to extrapolate what the vehicle was doing prior to failure can help an engineer fix or improve upon their design to reduce the risk of failure in the future.
+
+\section{Conclusion}
+
+\paragraph{}
+Based on the wants and needs of the team, the most important criteria is that data can be logged at the frequencies needed to evaluate models.
+Following this, the data must be easily accessible to as many people as possible.
+This includes the ability to easily remove data from the DAQ.
+After this, the data needs to be accessible, even when the car is not, to monitor health and diagnose issues more quickly during testing and competition.
+Lastly, having access to IMU and GPS data onboard is useful for many different models.
+With the primary constraint being time, this priority list was able to help inform choices about what features to focus on and what features to delay.
