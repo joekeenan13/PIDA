@@ -9,7 +9,7 @@ The first thing considered was how nodes can communicate with the DAQ.
 The previous DAQ solution used CAN communication with a 1 Mbps data rate to collect data from all nodes on the car.
 This became a throughput bottleneck, and lower priority CAN IDs would occasionally be blocked by high throughput, higher priority data.
 The robustness of the CAN bus was very nice and allowed for reliable communication between all nodes on the car, so newer CAN interfaces were primarily explored.
-There are currently 20 sensors and over 100 bytes of internal controls information worth of data that are desired during competition and testing that are sent from three different nodes in seven different messages.
+There are currently 20 sensors and over 100 bytes of internal controls information worth of desired data during competition and testing that are sent from three different nodes in seven different messages.
 The majority of this data is being transmitted at 400 hz.
 Additionally, during testing season, there are an additional 20 sensors that are used to help validate various models and analyses.
 Worst-case CAN loading for different data rates was plotted for both CAN and CAN FD in \cref{fig:CANAnalysis} to determine what data rates are acceptable.
@@ -34,7 +34,7 @@ As a result, a micro-SD card was selected as the storage medium.
 With an SD card as the storage medium, the maximum amount of data stored is the largest constraint.
 In a CSV file, each digit of a number is represented as a character, meaning that in order to represent the number "100", three bytes are required in addition to the comma delineator.
 This same number can be represented with just a single byte if the data is stored in a binary format.
-Knowing that the total amount of data stored during competition is nearly 200 bytes at 400 Hz, and the worst-case values for 1-byte values being three characters, 2-byte values being 5 characters, and 4-byte numbers being ten characters, the amount of data stored over a 10 hours would be 6.6 GB.
+Knowing that the total amount of data stored during competition is nearly 200 bytes at 400 Hz, and the worst-case values for 1-byte values being three characters, 2-byte values being 5 characters, and 4-byte numbers being ten characters, the amount of data stored over 10 hours would be 6.6 GB.
 As a result, the data is stored in a binary format described in \cref{fig:MetadataDiagram}.
 
 \begin{figure}[H]

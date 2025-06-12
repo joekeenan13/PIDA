@@ -77,7 +77,7 @@ This test was completed by using a fixed ID of 1, a data length of 32 bytes, and
 
 \paragraph{}
 After the CAN bus was confirmed to work and data was transmitted, CAN loading also needed to be tested.
-This could be done empirically, knowing the total amount of data being transmitted in each message and the frequency which each message was being sent.
+This could be done empirically, knowing the total amount of data being transmitted in each message and the frequency at which each message was being sent.
 To confirm that the desired throughput was actually achieved, the total number of each CAN ID was tracked over 10 seconds to confirm that the correct number of CAN messages were being received.
 
 \begin{table}[H] \label{table:CANTesting}
@@ -120,10 +120,10 @@ It was confirmed that packets were being constructed correctly.
 \paragraph{}
 Finally, the radio's line of sight distance was tested.
 This was done by driving the DAQ further and further away from the base antenna until no packets were received at the base side.
-The base side remained at the aerospace hangar on campus (Bldg. 004) wile the car was driven further down Highland Dr, and performance was measured at varying distances.
+The base side remained at the aerospace hangar on campus (Bldg. 004) while the car was driven further down Highland Dr, and performance was measured at varying distances.
 As can be seen from \cref{table:RadioDistance}, as the distance increased, the number of dropped packets also increased.
 Once the car got 2.5 miles away, the number of packets being dropped became unacceptable.
-This testing was done with as close to line of sight as was possible, but there were not any fully clear lines of sight going as far as needed, so there are some interferences due to trees and elevation change.
+This testing was done with as close to line of sight as was possible, but there were no fully clear lines of sight going as far as needed, so there are some interferences due to trees and elevation change.
 
 \begin{table}[H] \label{table:RadioDistance}
 \caption{Radio Distance Testing Results}

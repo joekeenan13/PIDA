@@ -344,7 +344,7 @@ Different from the radio communication task is that there will be two states tha
 \paragraph{}
 The Initialize state is responsible for configuring the peripherals needed to communicate with sensors and for configuring any sensors when it is applicable.
 Since both the IMU and GPS communicate over I2C, two I2C buses need to be configured.
-Additionally, each of these sensors need to be configured, including items such as setting up the sampling rate, any on board filtering, or changing the sensor range.
+Additionally, each of these sensors need to be configured, including items such as setting up the sampling rate, any onboard filtering, or changing the sensor range.
 For the basic analog sensors, the pins need to be configured to use their ADC alternate function.
 The Arduino pinMode function takes care of this.
 Additionally, the bit resolution also needs to be configured.
